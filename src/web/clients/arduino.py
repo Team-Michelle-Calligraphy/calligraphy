@@ -8,9 +8,9 @@ import serial
 # ports = list(serial.tools.list_ports.comports())
 # for p in ports:
 #   print(p)
+#   Arduino
 
 SERIAL = serial.Serial('/dev/cu.usbmodem14401', 9600)
 
 def send(message):
-  print(message)
   SERIAL.write(str(message))

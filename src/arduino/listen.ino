@@ -10,7 +10,7 @@ void setup() {
 
 void loop() {
   if(Serial.available()) {
-    switch(Serial.read())  {
+    switch(Serial.read()) {
     case '1':
       digitalWrite(8, LOW);
       break;
