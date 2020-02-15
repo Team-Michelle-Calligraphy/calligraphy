@@ -18,5 +18,5 @@ app.register_blueprint(api.api_draw, url_prefix='/')
 
 if __name__ == "__main__":
 	port = int(os.environ.get("PORT", 3441))
-	# app.debug = os.environ["MODE"]=="DEBUG"
+	app.debug = True # os.environ["MODE"]=="DEBUG"
 	app.run(host='0.0.0.0', port=port)
