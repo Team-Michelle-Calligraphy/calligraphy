@@ -14,3 +14,7 @@ SERIAL = serial.Serial('/dev/cu.usbmodem14401', 9600)
 
 def send(message):
   SERIAL.write(str(message))
+  # TODO: wait for a response from the machine (?)
+
+def read():
+  print(SERIAL.read()) # on Arduino: Serial.write(str)

@@ -1,9 +1,26 @@
 
-.button {
-  margin: 10px;
-  width: 100px;
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background: #eeeeee;
+}
+
+.header {
+  width: 100%;
+  position: fixed;
+  top: 0; left: 0;
+  height: 40px;
+  background: #1c1c1c;
+}
+
+.header .title {
+  color: #FFF;
   padding: 10px;
-  background: #bbb;
-  cursor: pointer;
-  text-align: center;
+}
+
+.container {
+  width: 100%;
+  margin-top: 40px;
 }

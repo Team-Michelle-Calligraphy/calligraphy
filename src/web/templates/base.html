@@ -12,7 +12,14 @@
 </head>
 
 <body>
-  {% block content %}{% endblock %}
+  <div class="header">
+    <div class="title">
+      Proverb
+    </div>
+  </div>
+  <div class="container">
+    {% block content %}{% endblock %}
+  </div>
   <script src="/static/packages/jquery.min.js"></script>
   <script src="/static/main.js"></script>
 </body>

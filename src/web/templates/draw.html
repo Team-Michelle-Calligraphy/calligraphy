@@ -1,0 +1,32 @@
+{% extends "base.html" %} {% block content %}
+<link rel="stylesheet" href="/static/styles/draw.css" />
+<div class="controller">
+  <div class="controller-col actions">
+
+  </div>
+  <div class="controler-col direction-pad-holder">
+    <div class="direction-pad">
+      <div id="north" class="circle-button">N</div>
+      <div id="west" class="circle-button">W</div>
+      <div id="east" class="circle-button">E</div>
+      <div id="south" class="circle-button">S</div>
+    </div>
+  </div>
+  <div class="controller-col vertical-pad-holder">
+    <div class="vertical-pad">
+      <div id="up" class="circle-button">UP</div>
+      <div id="down" class="circle-button">DOWN</div>
+    </div>
+  </div>
+  <div class="controller-col view-holder">
+    <div id="crosshair-lng"></div>
+    <div id="crosshair-lat"></div>
+    <!-- https://stackoverflow.com/questions/45631484/floating-div-crosshairs-confine-to-div -->
+    <canvas id="view-canvas"></canvas>
+    <!-- x,y coordinates in a box, and a vertical tracker too -->
+  </div>
+</div>
+<div class="library">
+
+</div>
+{% endblock %}

@@ -7,7 +7,7 @@ import urlparse
 import json
 
 main = Blueprint(
-    'main', __name__, template_folder='templates', static_folder='static')
+  'main', __name__, template_folder='templates', static_folder='static')
 
 
 # ------------------------------------------------------------------------------
@@ -18,7 +18,7 @@ main = Blueprint(
 @main.route("/", methods=["GET"])
 def main_route():
 
-	options = {}
-	options["strokes"] = []
+  options = {}
+  options["strokes"] = []
 
-	return render_template("index.html", **options)
+  return render_template("draw.html", **options)
