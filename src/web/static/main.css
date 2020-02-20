@@ -22,5 +22,12 @@ html, body {
 
 .container {
   width: 100%;
+  height: calc(100% - 40px);
   margin-top: 40px;
+  display: flex;
+  position: absolute;
+}
+
+.container-col {
+  height: 100%;
 }

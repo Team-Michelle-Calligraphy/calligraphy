@@ -1,34 +1,38 @@
 
+/* controller */
+
 .controller {
+  width: 610px;
+  background: #303030;
+}
+
+/* view */
+
+.view-holder {
+  padding: 20px 20px 0 20px;
+  width: calc(100% - 40px);
+}
+
+#canvas {
   width: 100%;
   height: 300px;
-  position: fixed;
-  background: #303030;
+  background: #000;
+  box-shadow: 4px 4px 4px #0002, -4px -4px 4px #0002, inset -4px 4px 4px #0001, inset 4px -4px 4px #0001;
+}
+
+/* button pads */
+
+.button-pad-holder {
   display: flex;
+  padding: 10px;
 }
 
-.controller-col {
-  height: 300px;
-}
-
-.direction-pad-holder {
-  width: 300px;
-  padding: 20px;
-}
-
-.direction-pad {
-  height: 260px;
-  width: 260px;
-  border-radius: 130px;
-  background: #ddd;
-  position: relative;
-}
+/* circle buttons */
 
 .circle-button {
-  background: #b1b1b1;
-  height: 90px;
-  width: 90px;
-  border-radius: 45px;
+  height: 80px;
+  width: 80px;
+  border-radius: 40px;
   text-align: center;
   padding-top: 32px;
   font-size: 22px;
@@ -39,65 +43,84 @@
   box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
-.circle-button#north {
+.circle-button:hover {
+  background: #ddd1;
+  cursor: pointer;
+  box-shadow: 4px 4px 4px #0002, -4px -4px 4px #0002, inset -4px 4px 4px #0001, inset 4px -4px 4px #0001;
+}
+
+.circle-button.north {
   top: 4px;
-  left: 50%;
-  margin-left: -45px;
+  left: calc(50% - 40px);
 }
 
-.circle-button#west {
-  top: 50%;
+.circle-button.west {
+  top: calc(50% - 40px);
   left: 4px;
-  margin-top: -45px;
+  transform: rotate(-90deg);
 }
 
-.circle-button#east {
-  top: 50%;
-  left: 100%;
-  margin-top: -45px;
-  margin-left: -94px;
+.circle-button.east {
+  top: calc(50% - 40px);
+  left: calc(100% - 84px);
+  transform: rotate(90deg);
 }
 
-.circle-button#south {
-  top: 100%;
-  left: 50%;
-  margin-left: -45px;
-  margin-top: -94px;
+.circle-button.south {
+  top: calc(100% - 84px);
+  left: calc(50% - 40px);
+  transform: rotate(180deg);
 }
+
+.arrow {
+  width: 16px;
+  height: 16px;
+  transform: rotate(45deg);
+  top: calc(50% - 8px);
+  left: calc(50% - 10px);
+  position: absolute;
+  border-left: 6px solid #FFF;
+  border-top: 6px solid #FFF;
+}
+
+/* center label */
+
+.center-label {
+  text-align: center;
+  font-size: 14px;
+  position: absolute;
+  top: calc(50% - 7px);
+  width: 100%;
+  color: #FFF;
+}
+
+/* direction pad */
+
+.direction-pad-holder {
+  padding: 10px;
+}
+
+.direction-pad {
+  height: 220px;
+  width: 220px;
+  border-radius: 110px;
+  background: #ddd1;
+  position: relative;
+  box-shadow: 4px 4px 4px #0002, -4px -4px 4px #0002, inset -4px 4px 4px #0001, inset 4px -4px 4px #0001;
+}
+
+/* vertical pad */
 
 .vertical-pad-holder {
-  padding: 20px;
-  width: 140px;
+  padding: 10px;
 }
 
 .vertical-pad {
-  width: 100px;
-  height: 260px;
-  background: #ddd;
+  width: 90px;
+  height: 220px;
+  background: #ddd1;
   border-radius: 50px;
   position: relative;
-}
 
-.circle-button#up {
-  left: 50%;
-  margin-left: -45px;
-  top: 4px;
-}
-
-.circle-button#down {
-  left: 50%;
-  margin-left: -45px;
-  top: 100%;
-  margin-top: -94px;
-}
-
-.view-holder {
-  padding: 20px;
-  width: 140px;
-}
-
-#view-canvas {
-  width: 260px;
-  height: 260px;
-  background: #ddd;
+  box-shadow: 4px 4px 4px #0002, -4px -4px 4px #0002, inset -4px 4px 4px #0001, inset 4px -4px 4px #0001;
 }
