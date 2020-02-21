@@ -1,6 +1,8 @@
 
 // CONST -------------------------------------------------------------------------------------------
 
+const PHYSICAL_BRUSH_LENGTH = 20;
+
 const WORLD = {
   BACKGROUND_COLOR: '#000',
   Z_AXIS_WIDTH: 120
@@ -48,6 +50,10 @@ function distance(a, b) {
 		Math.pow(a.y - b.y, 2) +
 		Math.pow(a.z - b.z, 2)
 	);
+}
+
+function getXYFromAngles({ x, y, a, b }) {
+
 }
 
 // WORLD -------------------------------------------------------------------------------------------
@@ -123,7 +129,7 @@ class CanvasStroke {
         this.ctx.moveTo(x, y);
         break;
       case 'to':
-        this.ctx.lineTo(command.x, command.y);
+        this.ctx.lineTo(x + command.x, x + command.y);
         break;
       case 'up':
         this.ctx.stroke();
@@ -232,18 +238,3 @@ class ZAxis {
     this.ctx.fill();
   }
 }
-
-// MAIN --------------------------------------------------------------------------------------------
-
-window.onload = function () {
-	const canvas = document.getElementById("canvas");
-	const ctx = canvas.getContext("2d");
-
-  const W = 570, H = 300;
-  canvas.width = W;
-  canvas.height = H;
-
-  const world = new World(ctx, W, H);
-  world.draw({ x: 120, y: 80 }); // z, a, b, stroke
-}
-
