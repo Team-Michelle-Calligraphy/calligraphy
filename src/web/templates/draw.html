@@ -3,25 +3,74 @@
 <script src="/static/classes/canvas.js"></script>
 <script src="/static/scripts/draw.js"></script>
 
-<span ng-controller="draw" ng-init="init()">
+<div class="container" ng-controller="draw" ng-init="init()">
   <div class="container-col controller">
+    <div class="controller-row coords">
+        <div class="coods-title">Position</div>
+        <div class="coord-title">
+          <div class="title">x</div>
+          <input class="value" ng-model="position.x" disabled />
+        </div>
+        <div class="coord-title">
+          <div class="title">x</div>
+          <input class="value" ng-model="position.x" disabled />
+        </div>
+        <div class="coord-title">
+          <div class="title">x</div>
+          <input class="value" ng-model="position.x" disabled />
+        </div>
+        <div class="coord-title">
+          <div class="title">x</div>
+          <input class="value" ng-model="position.x" disabled />
+        </div>
+        <div class="coord-title">
+          <div class="title">x</div>
+          <input class="value" ng-model="position.x" disabled />
+        </div>
+    </div>
     <div class="controller-row view-holder">
       <canvas id="canvas"></canvas>
+    </div>
+    <div class="controller-row to-coords">
+        <div class="coods-title">Move To</div>
+        <div class="coord-title">
+          <div class="title">x</div>
+          <input class="value" ng-model="position.to.x" />
+        </div>
+        <div class="coord-title">
+          <div class="title">x</div>
+          <input class="value" ng-model="position.to.x" />
+        </div>
+        <div class="coord-title">
+          <div class="title">x</div>
+          <input class="value" ng-model="position.to.x" />
+        </div>
+        <div class="coord-title">
+          <div class="title">x</div>
+          <input class="value" ng-model="position.to.x" />
+        </div>
+        <div class="coord-title">
+          <div class="title">x</div>
+          <input class="value" ng-model="position.to.x" />
+        </div>
+        <div class="coords-action">
+          <div class="stroke-action submittable">Move</div>
+        </div>
     </div>
     <div class="controller-row button-pad-holder">
       <div class="direction-pad-holder">
         <div class="direction-pad">
           <div class="center-label">x,y</div>
-          <div id="north" class="circle-button north" ng-click="arrows('north')">
+          <div class="circle-button north submittable" ng-click="arrows('north')">
             <div class="arrow"></div>
           </div>
-          <div id="west" class="circle-button west" ng-click="arrows('west')">
+          <div class="circle-button west submittable" ng-click="arrows('west')">
             <div class="arrow"></div>
           </div>
-          <div id="east" class="circle-button east" ng-click="arrows('east')">
+          <div class="circle-button east submittable" ng-click="arrows('east')">
             <div class="arrow"></div>
           </div>
-          <div id="south" class="circle-button south" ng-click="arrows('south')">
+          <div class="circle-button south submittable" ng-click="arrows('south')">
             <div class="arrow"></div>
           </div>
         </div>
@@ -29,10 +78,10 @@
       <div class="vertical-pad-holder">
         <div class="vertical-pad">
           <div class="center-label">z</div>
-          <div id="up" class="circle-button north"  ng-click="arrows('up')">
+          <div class="circle-button north submittable" ng-click="arrows('up')">
             <div class="arrow"></div>
           </div>
-          <div id="down" class="circle-button south"  ng-click="arrows('down')">
+          <div class="circle-button south submittable" ng-click="arrows('down')">
             <div class="arrow"></div>
           </div>
         </div>
@@ -40,16 +89,16 @@
       <div class="direction-pad-holder">
         <div class="direction-pad">
           <div class="center-label">angle</div>
-          <div id="a" class="circle-button north"  ng-click="arrows('a-north')">
+          <div class="circle-button north submittable" ng-click="arrows('a-north')">
             <div class="arrow"></div>
           </div>
-          <div id="b" class="circle-button west"  ng-click="arrows('a-west')">
+          <div class="circle-button west submittable" ng-click="arrows('a-west')">
             <div class="arrow"></div>
           </div>
-          <div id="c" class="circle-button east"  ng-click="arrows('a-east')">
+          <div class="circle-button east submittable" ng-click="arrows('a-east')">
             <div class="arrow"></div>
           </div>
-          <div id="d" class="circle-button south" ng-click="arrows('a-south')">
+          <div class="circle-button south submittable" ng-click="arrows('a-south')">
             <div class="arrow"></div>
           </div>
         </div>
@@ -61,12 +110,19 @@
     </div> -->
   </div>
   <div class="container-col library">
-    <div class="scroll up"></div>
-    <div class="items">
+    <!-- <div class="scroll up"></div> -->
+    <div class="strokes">
+      <div class="stroke" ng-repeat="stroke in strokes track by $index">
+        <div class="stroke-title">[[ stroke.name ]]</div>
+        <div class="stroke-actions">
+          <div class="stroke-action modifyable">Edit</div>
+          <div class="stroke-action submittable">Draw</div>
+          <div class="stroke-action previewable" ng-click="preview(stroke)">Preview</div>
+        </div>
+      </div>
     <!--  -->
     </div>
-    <div class="scroll down"></div>
+    <!-- <div class="scroll down"></div> -->
   </div>
-
-</span>
+</div>
 {% endblock %}

@@ -4,7 +4,7 @@ html, body {
   height: 100%;
   margin: 0 auto;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  background: #eeeeee;
+  background: #303030;
 }
 
 .header {
@@ -30,4 +30,22 @@ html, body {
 
 .container-col {
   height: 100%;
+}
+
+.submittable:hover {
+  background: #48e7287a;
+  cursor: pointer;
+  box-shadow: 4px 4px 4px #17c50022, -4px -4px 4px #17c50022, inset -4px 4px 4px #FFF1, inset 4px -4px 4px #FFF1;
+}
+
+.previewable:hover {
+  background: #dcf30db2;
+  cursor: pointer;
+  box-shadow: 4px 4px 4px #c4d80e22, -4px -4px 4px #c4d80e22, inset -4px 4px 4px #FFF1, inset 4px -4px 4px #FFF1;
+}
+
+.modifyable:hover {
+  background: #0ee0e7a6;
+  cursor: pointer;
+  box-shadow: 4px 4px 4px #0ca0a522, -4px -4px 4px #0ca0a522, inset -4px 4px 4px #FFF1, inset 4px -4px 4px #FFF1;
 }

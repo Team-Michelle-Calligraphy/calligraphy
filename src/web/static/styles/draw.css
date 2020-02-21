@@ -2,7 +2,7 @@
 /* controller */
 
 .controller {
-  width: 610px;
+  width: 800px;
   background: #303030;
 }
 
@@ -41,11 +41,7 @@
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
   -moz-box-sizing: border-box;    /* Firefox, other Gecko */
   box-sizing: border-box;         /* Opera/IE 8+ */
-}
-
-.circle-button:hover {
   background: #ddd1;
-  cursor: pointer;
   box-shadow: 4px 4px 4px #0002, -4px -4px 4px #0002, inset -4px 4px 4px #0001, inset 4px -4px 4px #0001;
 }
 
@@ -123,4 +119,54 @@
   position: relative;
 
   box-shadow: 4px 4px 4px #0002, -4px -4px 4px #0002, inset -4px 4px 4px #0001, inset 4px -4px 4px #0001;
+}
+
+
+/* library */
+
+.library {
+  min-width: 480px;
+  width: 100%;
+  background: #303030;
+  overflow: scroll;
+}
+
+.stroke {
+  width: 100%;
+  height: 80px;
+  background: #303030;
+  color: #FFF;
+  padding: 30px;
+  border-bottom: 1px solid #ddd1;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;         /* Opera/IE 8+ */
+  overflow: hidden;
+}
+
+.stroke-title {
+  float: left;
+  width: 30%;
+}
+
+.stroke-actions {
+  float: right;
+  width: 70%;
+  min-width: 360px;
+  margin-top: 16px;
+}
+
+.stroke-action {
+  margin: -26px 10px 0;
+  height: 40px;
+  width: 120px;
+  text-align: center;
+  float: right;
+  border-radius: 30px;
+  background: #ddd1;
+  box-shadow: 4px 4px 4px #0002, -4px -4px 4px #0002, inset -4px 4px 4px #0001, inset 4px -4px 4px #0001;
+  padding-top: 10px;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;         /* Opera/IE 8+ */
 }

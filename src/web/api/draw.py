@@ -14,17 +14,17 @@ api_draw = Blueprint('api_draw', __name__, template_folder='templates')
 def api_draw_route():
   data = request.get_json()
 
-  num = 0
-  if data["status"] == "on":
-    num += 1
-  if data["color"] == "red":
-    num += 1
-  elif data["color"] == "yellow":
-    num += 3
-  elif data["color"] == "green":
-    num += 5
-  elif data["color"] == "blue":
-    num += 7
+  command = data["command"]
+  serial = serialize(command)
 
-  arduino.send(num)
-  return jsonify({}), 200
+  arduino.send(serial)
+
+  resp = {
+    'x': 10,
+    'y': 10,
+    'z': 10,
+    'a': 10,
+    'b': 10
+  }
+
+  return jsonify(resp), 200
