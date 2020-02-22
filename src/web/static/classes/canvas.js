@@ -262,14 +262,17 @@ class ZAxis {
     }
 
     const theta = Math.asin(r / 30);
-
     const dz = Math.cos(theta) * 30;
 
-    this.ctx.strokeStyle = POINTER.STROKE_COLOR;
-    this.ctx.lineWidth = POINTER.WIDTH;
-    this.ctx.beginPath();
-    this.ctx.arc(x, z - 30, 60, 0, Math.TWO_PI);
-    this.ctx.stroke();
+    // this.ctx.strokeStyle = POINTER.STROKE_COLOR;
+    // this.ctx.lineWidth = POINTER.WIDTH;
+    // this.ctx.beginPath();
+    // if (dir < 0) {
+    //   this.ctx.arc(x, z - 30, 60, Math.HALF_PI, theta);
+    // } else {
+    //   this.ctx.arc(x, z - 30, 60, theta, Math.HALF_PI);
+    // }
+    // this.ctx.stroke();
 
     this.ctx.strokeStyle = BRUSH.STROKE_COLOR;
     this.ctx.lineWidth = BRUSH.WIDTH;

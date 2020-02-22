@@ -95,22 +95,23 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
 
   $scope.drawStroke = function (stroke) {
     const commands = parseCommands(stroke.body);
-    $scope.drawCall(stroke.body);
+    $scope.drawCall(commands);
   }
 
   $scope.moveToCoords = function () {
     const to = $scope.position.to;
-    const commands = Object.assign({}, $scope.position.to);
-    commands.type = 'abs';
-    $scope.drawCall(commands);
+    const command = Object.assign({}, $scope.position.to);
+    command.type = 'abs';
+    $scope.drawCall([command]);
   }
 
   $scope.drawCall = function (commands) {
+    console.log({commands});
     let req = {
       method: 'POST',
       url: '/api/draw',
       headers: { 'Content-Type': 'application/json' },
-      datr: { commands }
+      data: { commands }
     };
 
     $http(req)
