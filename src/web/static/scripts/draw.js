@@ -94,7 +94,7 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
   // DRAW
 
   $scope.drawStroke = function (stroke) {
-    const commands = parseCommands(stroke.body);
+    const commands = parseCommands(stroke);
     $scope.drawCall(commands);
   }
 
@@ -106,12 +106,11 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
   }
 
   $scope.drawCall = function (commands) {
-    console.log({commands});
     let req = {
       method: 'POST',
       url: '/api/draw',
       headers: { 'Content-Type': 'application/json' },
-      data: { commands }
+      data: JSON.stringify({ commands })
     };
 
     $http(req)

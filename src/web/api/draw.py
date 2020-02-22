@@ -38,21 +38,21 @@ def validate_position(pos):
 
 def validate_to(command):
   new_pos = {
-    'x': current_pos['x'] + command["x"],
-    'y': current_pos['y'] + command["y"],
-    'z': current_pos['z'] + command["z"],
-    'r': current_pos['r'] + command["r"],
-    'phi': current_pos['phi'] + command["phi"]
+    'x': current_pos['x'] + command['x'],
+    'y': current_pos['y'] + command['y'],
+    'z': current_pos['z'] + command['z'],
+    'r': current_pos['r'] + command['r'],
+    'phi': current_pos['phi'] + command['phi']
   }
   return validate_position(new_pos)
 
 def validate_abs(command):
   new_pos = {
-    'x': command["x"],
-    'y': command["y"],
-    'z': command["z"],
-    'r': command["r"],
-    'phi': command["phi"]
+    'x': command['x'],
+    'y': command['y'],
+    'z': command['z'],
+    'r': command['r'],
+    'phi': command['phi']
   }
   return validate_position(new_pos)
 
@@ -63,15 +63,18 @@ def validate_abs(command):
 # ------------------------------------------------------------------------------
 @api_draw.route('api/draw', methods=['POST'])
 def api_draw_route():
+  global current_pos
   data = request.get_json()
 
-  commands = data["commands"]
+  commands = data['commands']
   for command in commands:
-    new_pos = {}
-    if command['type'] == "to":
+    print(command)
+    new_pos = current_pos
+    if command['type'] == 'to':
       new_pos = validate_to(command)
-    elif (command['type'] == "abs"):
+    elif (command['type'] == 'abs'):
       new_pos = validate_abs(command)
+    # elif: down and up preset, 
     
     if new_pos == False:
       return jsonify({}), 302
@@ -80,7 +83,7 @@ def api_draw_route():
     # command_stirng = translate(new_pos)
 
     # send the command to the arduino
-    # arduino.send(command_string)
+    arduino.send('1') # command_string
     
     current_pos = new_pos
 

@@ -131,7 +131,9 @@ class CanvasStroke {
         this.ctx.moveTo(x, y);
         break;
       case 'to':
-        this.ctx.lineTo(x + command.x, x + command.y);
+        x = x + command.x;
+        y = y + command.y;
+        this.ctx.lineTo(x, y);
         break;
       case 'up':
         this.ctx.stroke();

@@ -22,11 +22,16 @@ function parseCommands(stroke) {
       commands.push({
         type: 'to',
         x: parseInt(coords[1]),
-        y: parseInt(coords[2])
+        y: parseInt(coords[2]),
+        z: parseInt(coords[3]),
+        r: parseInt(coords[4]),
+        phi: parseInt(coords[5])
       });
       break;
-
+    default:
+      break;
     }
   });
+  console.log(commands);
   return commands;
 }
