@@ -22,41 +22,59 @@ currentPosition = {
 
 def validate_to(command) :
   move_x = command["x"]
-  if currentPosition['x'] + move_x > x_bounds || currentPosition['x'] + move_x < 0:
+  move_y = command["y"]
+  move_z = command["z"]
+  move_r = command["r"]
+  move_phi = command["phi"]
+  
+  
+  new_pos['x'] = command['x'] + move_x
+  new_pos['y'] = command['y'] + move_y
+  new_pos['z'] = command['z'] + move_z
+  new_pos['r'] = command['r'] + move_r
+  new_pos['phi'] = command['phi'] + move_phi
+  
+  if new_pos['x'] > x_bounds or new_pos['x'] < 0:
+    return False;
+  
+  if new_pos['y'] > y_bounds or new_pos['y'] < 0:
+    return False
+  
+  if new_pos['z'] > z_bounds or new_pos['z'] < 0:
+    return False
+  
+  if new_pos['r'] > r_bounds or new_pos['r'] < 0:
+    return False
+  
+  if new_pos['phi'] > phi_bounds or new_pos['phi'] < 0:
     return False
     
-  move_y = command["y"]
-  if currentPosition['y'] + move_y > y_bounds || currentPosition['y'] + move_y < 0:
-    return False
-
-  move_z = command["z"]
-  if currentPosition['z'] + move_z > z_bounds || currentPosition['z'] + move_z < 0:
-    return False
-
-  move_a = command["r"]
-  if currentPosition['r'] + move_r > r_bounds || currentPosition['r'] + move_r < 0:
-    return False
-      
-  move_b = command["phi"]
-  if currentPosition['phi'] + move_phi > phi_bounds || currentPosition['phi'] + move_phi < 0:
-    return False
+  return new_pos
     
 def validate_abs(command) :
   if command['type'] == "abs":
-    if currentPosition['x'] > x_bounds || currentPosition['x'] < 0:
+    new_pos['x'] = command['x']
+    new_pos['y'] = command['y']
+    new_pos['z'] = command['z']
+    new_pos['r'] = command['r']
+    new_pos['phi'] = command['phi']
+    
+    if new_pos['x'] > x_bounds or new_pos['x'] < 0:
       return False;
     
-    if currentPosition['y'] > y_bounds || currentPosition['y'] < 0:
+    if new_pos['y'] > y_bounds or new_pos['y'] < 0:
       return False
     
-    if currentPosition['z'] > z_bounds || currentPosition['z'] < 0:
+    if new_pos['z'] > z_bounds or new_pos['z'] < 0:
       return False
     
-    if currentPosition['r'] > r_bounds || currentPosition['r'] < 0:
+    if new_pos['r'] > r_bounds or new_pos['r'] < 0:
       return False
     
-    if currentPosition['phi'] > phi_bounds || currentPosition['phi'] < 0:
+    if new_pos['phi'] > phi_bounds or new_pos['phi'] < 0:
       return False
+      
+    return new_pos
 
 # ------------------------------------------------------------------------------
 # REQUIRES:
@@ -68,18 +86,20 @@ def api_draw_route():
   data = request.get_json()
 
   commands = data["commands"]
-  for (command in commands):
-    if (command['type'] == "to":
-      validate_to(command)
-    if (command['type'] == "abs"):
-      validate_abs(command)
-      
-    ## Update Current Position
-    currentPosition['x'] = currentPosition['x'] + move_x
-    currentPosition['y'] = currentPosition['y'] + move_y
-    currentPosition['z'] = currentPosition['z'] + move_z
-    currentPosition['a'] = currentPosition['a'] + move_a
-    currentPosition['b'] = currentPosition['b'] + move_b
+  for command in commands:
+    new_pos = {}
+    if command['type'] == "to":
+      new_pos = validate_to(command)
+    elif (command['type'] == "abs"):
+      new_pos = validate_abs(command)
+    
+    command_stirng = translate(new_pos)
+    
+#    arduino.send(command_string)
+    
+    currentPosition = new_pos;
+    
+    ##
   
   
   # validations should make sure positions don't go out of bounds
@@ -93,7 +113,6 @@ def api_draw_route():
     'r': currentPosition['r'],
     'phi': currentPosition['phi']
   }
-
-  currentPosition = resp
+  
 
   return jsonify(resp), 200
