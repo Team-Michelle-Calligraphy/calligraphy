@@ -5,6 +5,7 @@ from clients import arduino
 
 api_draw = Blueprint('api_draw', __name__, template_folder='templates')
 
+# GLOBALS
 
 currentPosition = {
   'x': 0,
@@ -13,7 +14,6 @@ currentPosition = {
   'a': 0,
   'b': 0
 }
-
 
 # ------------------------------------------------------------------------------
 # REQUIRES:

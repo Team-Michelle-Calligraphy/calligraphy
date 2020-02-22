@@ -1,8 +1,6 @@
 # coding: utf-8
 import os
 from flask import *
-import requests
-import oauth2 as oauth
 import urlparse
 import json
 
