@@ -1,14 +1,7 @@
 
-function buildToCommand({ x, y, z, a, b}) {
-  return `to ${x} ${y} ${z} ${a} ${b}`;
-}
-
-function setPosition(to) {
-  to.to = to;
-  return to;
-}
-
 angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($scope, $http) {
+
+  // SETUP
 
   $scope.strokes = [];
   $scope.position = {
@@ -27,7 +20,7 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
 
-    const W = 570, H = 300; // TODO: get these dynamically
+    const W = 570, H = 300; // TODO: these should represent the paper size
     canvas.width = W;
     canvas.height = H;
 
@@ -49,10 +42,6 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
       }, function (error) { 
         console.log(error);
     });
-  }
-
-  $scope.canvasDraw = function() {
-    $scope.world.draw($scope.position);
   }
 
   $scope.arrows = function (dir) {
@@ -88,49 +77,48 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
       $scope.position.to.b += 1;
       break;
     }
+    $scope.canvasDraw();
   }
+
+  // CANVAS
 
   $scope.preview = function (stroke) {
     $scope.position.stroke = stroke;
     $scope.canvasDraw();
   }
 
-  $scope.drawStroke = function (stroke) {
-    console.log(stroke);
-    let req = {
-      method: 'POST',
-      url: '/api/draw',
-      headers: { 'Content-Type': 'application/json' },
-      data: {
-        commands: stroke.body
-      }
-    };
+  $scope.canvasDraw = function() {
+    $scope.world.draw($scope.position);
+  }
 
-    $http(req)
-      .then(function ({ data }) {
-        $scope.world.draw(data);
-      }, function (error) {
-        console.log(error);
-    });
+  // DRAW
+
+  $scope.drawStroke = function (stroke) {
+    const commands = parseCommands(stroke.body);
+    $scope.drawCall(stroke.body);
   }
 
   $scope.moveToCoords = function () {
     const to = $scope.position.to;
-    commands = buildToCommand(to);
+    const commands = Object.assign({}, $scope.position.to);
+    commands.type = 'abs';
+    $scope.drawCall(commands);
+  }
+
+  $scope.drawCall = function (commands) {
     let req = {
       method: 'POST',
       url: '/api/draw',
       headers: { 'Content-Type': 'application/json' },
-      data: {
-        commands: commands
-      }
+      data: { commands }
     };
 
     $http(req)
       .then(function ({ data }) {
-        // TODO: set the local data to the new data, then draw that
-        // $scope.world.draw(data);
-        $scope.postion = setPosition($scope.position.to);
+        $scope.position = data;
+        $scope.position.to = Object.assign({}, data);
+        $scope.canvasDraw();
+
       }, function (error) {
         console.log(error);
     });

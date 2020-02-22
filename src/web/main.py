@@ -31,6 +31,6 @@ def open_browser():
 # main
 if __name__ == "__main__":
   # open the browser on another thread
-  # Timer(1, open_browser).start() # only if app.debug
+  # TODO: Timer(1, open_browser).start() # only if app.debug
   # run the app on the port
   app.run(host='0.0.0.0', port=port)

@@ -5,6 +5,16 @@ from clients import arduino
 
 api_draw = Blueprint('api_draw', __name__, template_folder='templates')
 
+
+currentPosition = {
+  'x': 0,
+  'y': 0,
+  'z': 0,
+  'a': 0,
+  'b': 0
+}
+
+
 # ------------------------------------------------------------------------------
 # REQUIRES:
 # MODIFIES:
@@ -14,10 +24,14 @@ api_draw = Blueprint('api_draw', __name__, template_folder='templates')
 def api_draw_route():
   data = request.get_json()
 
-  command = data["command"]
-  serial = serialize(command)
+  commands = data["commands"]
 
-  arduino.send(serial)
+  # TODO: parse the commands and validate them
+  # validations should make sure positions don't go out of bounds
+  # should convert all to commands to abs commands based off of the current position
+  # send commands one at a time to: arduino.send(command)
+
+  # TODO: respond with the final positions
 
   resp = {
     'x': 10,
@@ -26,5 +40,7 @@ def api_draw_route():
     'a': 10,
     'b': 10
   }
+
+  currentPosition = resp
 
   return jsonify(resp), 200

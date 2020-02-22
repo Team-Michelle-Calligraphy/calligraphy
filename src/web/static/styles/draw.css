@@ -14,25 +14,68 @@
 }
 
 .coords-title {
-  padding: 20px;
+  padding: 20px 0;
   font-size: 12px;
-  min-width: 100px;
+  min-width: 60px;
 }
 
 .coord {
   width: 14%;
+  display: flex;
+  background: #ddd1;
+  box-shadow: 4px 4px 4px #0002, -4px -4px 4px #0002, inset -4px 4px 4px #0001, inset 4px -4px 4px #0001;
+  margin: 10px;
+  height: 40px;
+  border-radius: 20px;
+  font-size: 16px;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;         /* Opera/IE 8+ */
+}
+
+.coords.disabled {
+  color: #FFF8;
+}
+
+.coords.disabled input {
+  color: #FFF8;
+}
+
+.coord .title {
+  padding: 9px;
+}
+
+.coord:focus-within {
+  background: #dcf30db2;
+  cursor: pointer;
+  box-shadow: 4px 4px 4px #c4d80e22, -4px -4px 4px #c4d80e22, inset -4px 4px 4px #FFF1, inset 4px -4px 4px #FFF1;
 }
 
 .coord input {
   height: 38px;
   width: 60px;
+  background: none;
+  border: none;
+  outline: none;
+  color: #FFF;
+  text-align: center;
+  font-size: 16px;
+}
 
+.coord input:focus {
+  color: #000;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
 }
 
 /* view */
 
 .view-holder {
-  padding: 20px 20px 0 20px;
+  padding: 0 20px;
   width: calc(100% - 40px);
 }
 
@@ -150,9 +193,6 @@
 .library {
   width: 610px;
   background: #303030;
-}
-
-.strokes {
   overflow: scroll;
 }
 
@@ -187,7 +227,7 @@
   width: 120px;
   text-align: center;
   float: right;
-  border-radius: 30px;
+  border-radius: 20px;
   background: #ddd1;
   box-shadow: 4px 4px 4px #0002, -4px -4px 4px #0002, inset -4px 4px 4px #0001, inset 4px -4px 4px #0001;
   padding-top: 10px;

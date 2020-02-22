@@ -31,16 +31,12 @@ const STROKE = {
   WIDTH: 2
 };
 
-const EXAMPLE_COMMANDS = [
-  { type: 'down' },
-  { type: 'to', x: 30, y: 50 },
-  { type: 'to', x: 60, y: 10 },
-  { type: 'to', x: 20, y: 10 },
-  { type: 'up' }
-]
-
 Math.HALF_PI = Math.PI / 2;
 Math.TWO_PI = Math.PI * 2;
+
+Math.toRadians = function (deg) {
+  return Math.PI * deg / 180;
+}
 
 // GLOBAL ------------------------------------------------------------------------------------------
 
@@ -56,37 +52,8 @@ function getXYFromAngles({ x, y, a, b }) {
 
 }
 
-function parseCommands(stroke) {
-  if (!stroke || !stroke.body) {
-    return [];
-  }
-  const commands = [];
-  var lines = stroke.body.split('\n');
-  lines.forEach(line => {
-    console.log(line, line.match(/(up).*/))
-    switch (true) {
-    case !!line.match(/(up).*/):
-      commands.push({
-        type: 'up'
-      });
-      break;
-    case !!line.match(/(down).*/):
-      commands.push({
-        type: 'down'
-      });
-      break;
-    case !!line.match(/(to).*/):
-      const coords = line.split(' ');
-      commands.push({
-        type: 'to',
-        x: parseInt(coords[1]),
-        y: parseInt(coords[2])
-      });
-      break;
+function getZFromAngles(){
 
-    }
-  });
-  return commands;
 }
 
 // WORLD -------------------------------------------------------------------------------------------
@@ -97,7 +64,8 @@ class World {
     this.W = width;
     this.H = height;
     this.stroke = new CanvasStroke(this, ctx);
-    this.pointer = new Pointer(this, ctx);
+    this.pointer = new Pointer(this, ctx, 'main');
+    this.pointerTo = new Pointer(this, ctx, 'to');
     this.zAxis = new ZAxis(this, ctx);
   }
   
@@ -105,7 +73,8 @@ class World {
     this.drawBackground();
     this.stroke.draw({ stroke, x, y });
     this.pointer.draw({ x, y, z, a, b });
-    this.zAxis.draw({ z, a, b });
+    this.pointerTo.draw(to);
+    this.zAxis.draw({ z, a, b, to });
   }
 
   drawBackground() {
@@ -156,7 +125,6 @@ class CanvasStroke {
     this.ctx.strokeStyle = STROKE.STROKE_COLOR;
     this.ctx.lineWidth = STROKE.WIDTH;
     const commands = parseCommands(stroke);
-    console.log('commands', commands)
     commands.forEach(command => {
       switch (command.type) {
       case 'down':
@@ -178,9 +146,10 @@ class CanvasStroke {
 // POINTER ------------------------------------------------------------------------------------------
 
 class Pointer {
-  constructor(world, ctx) {
+  constructor(world, ctx, type) {
     this.world = world;
     this.ctx = ctx;
+    this.type = type;
   }
 
   draw({ x, y, a, b }) {
@@ -212,6 +181,10 @@ class Pointer {
   drawBrush({ x, y, a, b }) {
     this.ctx.strokeStyle = BRUSH.STROKE_COLOR;
     this.ctx.lineWidth = BRUSH.WIDTH;
+
+    if(this.type === 'to') {
+      this.ctx.strokeStyle = '#FF0';
+    }
     this.ctx.beginPath();
     this.ctx.moveTo(x, y);
     // TODO: calculate based on angles
@@ -233,9 +206,10 @@ class ZAxis {
     this.ctx = ctx;
   }
 
-  draw() {
+  draw({ z, a, b, to }) {
     this.drawBackground();
-    this.drawBrush({ z: .8 });
+    this.drawBrush({ z, a, b }, 'main');
+    this.drawBrush(to, 'to');
   }
 
   drawBackground() {
@@ -264,19 +238,28 @@ class ZAxis {
     this.ctx.stroke();
   }
 
-  drawBrush({ z }) {
-    const x = this.world.W - (WORLD.Z_AXIS_WIDTH / 2);
+  drawBrush({ z, a, b }, type) {
     this.ctx.strokeStyle = BRUSH.STROKE_COLOR;
     this.ctx.lineWidth = BRUSH.WIDTH;
+    if(type === 'to') {
+      this.ctx.strokeStyle = '#FF0';
+    }
+    const x = this.world.W - (WORLD.Z_AXIS_WIDTH / 2);
     this.ctx.beginPath();
     this.ctx.moveTo(x, 0);
-    // TODO: calculate based on angles
+    
+    // get the total angle and change it to degrees
+    const rad = Math.toRadians(a + b); // TODO: use this to draw the angle
+    
     this.ctx.lineTo(x + 20, this.world.H * z);
     this.ctx.stroke();
     
     this.ctx.beginPath();
     this.ctx.arc(x + 20, this.world.H * z, 2, 0, Math.TWO_PI);
     this.ctx.fillStyle = BRUSH.STROKE_COLOR;
+    if(type === 'to') {
+      this.ctx.fillStyle = '#FF0';
+    }
     this.ctx.fill();
   }
 }

@@ -17,7 +17,7 @@ def findPort():
       # if this says arduino and setting it works then stop here
       return True
   # if none of those work try this one
-  return setSerial('/dev/cu.usbmodem14401') # TODO: pull from the enviornment
+  return setSerial('/dev/cu.usbmodem14401') # TODO: pull from the enviornment, allow user to set manually
 
 # use this to set a serial port for Arduino, can be called manually
 # port number can be found in the bottom right corner of the Arduino software
