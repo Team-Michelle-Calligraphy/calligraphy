@@ -8,10 +8,10 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
     x: 180,
     y: 120,
     z: 120,
-    a: 20,
-    b: 20,
+    r: 20,
+    phi: 20,
     to: {
-      x: 0, y: 0, z: 0, a: 0, b: 0
+      x: 0, y: 0, z: 0, r: 0, phi: 0
     },
     stroke: {}
   }
@@ -65,16 +65,16 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
       $scope.position.to.z += 1;
       break;
     case 'a-north':
-      $scope.position.to.a -= 1;
+      $scope.position.to.r -= 1;
       break;
     case 'a-south':
-      $scope.position.to.a += 1;
+      $scope.position.to.r += 1;
       break;
     case 'a-west':
-      $scope.position.to.b -= 1;
+      $scope.position.to.phi -= 1;
       break;
     case 'a-east':
-      $scope.position.to.b += 1;
+      $scope.position.to.phi += 1;
       break;
     }
     $scope.canvasDraw();
@@ -110,7 +110,7 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
       method: 'POST',
       url: '/api/draw',
       headers: { 'Content-Type': 'application/json' },
-      data: { commands }
+      datr: { commands }
     };
 
     $http(req)
@@ -125,3 +125,9 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
   }
 
 }]);
+
+$(function(){
+  $('.coords.enabled .coord').click(function(){
+    $(this).children('input').focus();
+  });
+});

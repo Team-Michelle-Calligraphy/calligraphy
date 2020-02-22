@@ -20,18 +20,18 @@
         <input class="value" type="number" ng-model="position.z" disabled />
       </div>
       <div class="coord">
-        <div class="title">a</div>
-        <input class="value" type="number" ng-model="position.a" disabled />
+        <div class="title">r</div>
+        <input class="value" type="number" ng-model="position.r" disabled />
       </div>
       <div class="coord">
-        <div class="title">b</div>
-        <input class="value" type="number" ng-model="position.b" disabled />
+        <div class="title">phi</div>
+        <input class="value" type="number" ng-model="position.phi" disabled />
       </div>
     </div>
     <div class="controller-row view-holder">
       <canvas id="canvas"></canvas>
     </div>
-    <div class="controller-row coords">
+    <div class="controller-row coords enabled">
         <div class="coords-title">Move To</div>
         <div class="coord">
           <div class="title">x</div>
@@ -46,12 +46,12 @@
           <input class="value" type="number" ng-model="position.to.z" ng-change="canvasDraw()" />
         </div>
         <div class="coord">
-          <div class="title">a</div>
-          <input class="value" type="number" ng-model="position.to.a" ng-change="canvasDraw()" />
+          <div class="title">r</div>
+          <input class="value" type="number" ng-model="position.to.r" ng-change="canvasDraw()" />
         </div>
         <div class="coord">
-          <div class="title">b</div>
-          <input class="value" type="number" ng-model="position.to.b" ng-change="canvasDraw()" />
+          <div class="title">phi</div>
+          <input class="value" type="number" ng-model="position.to.phi" ng-change="canvasDraw()" />
         </div>
     </div>
     <div class="controller-row button-pad-holder">
@@ -85,7 +85,7 @@
       </div>
       <div class="direction-pad-holder">
         <div class="direction-pad">
-          <div class="center-label">angle</div>
+          <div class="center-label">r,phi</div>
           <div class="circle-button north previewable" ng-click="arrows('a-north')">
             <div class="arrow"></div>
           </div>

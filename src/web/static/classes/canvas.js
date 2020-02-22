@@ -17,8 +17,7 @@ const TICK = {
 const POINTER = {
   STROKE_COLOR: '#FFF8',
   WIDTH: 2,
-  GAP: 12,
-  LENGTH: 24
+  LENGTH: 12
 };
 
 const BRUSH = {
@@ -40,15 +39,15 @@ Math.toRadians = function (deg) {
 
 // GLOBAL ------------------------------------------------------------------------------------------
 
-function distance(a, b) {
-  return Math.sqrt(
-    Math.pow(a.x - b.x, 2) +
-    Math.pow(a.y - b.y, 2) +
-    Math.pow(a.z - b.z, 2)
-  );
-}
+// function distance(r, phi) {
+//   return Math.sqrt(
+//     Math.pow(a.x - b.x, 2) +
+//     Math.pow(a.y - b.y, 2) +
+//     Math.pow(a.z - b.z, 2)
+//   );
+// }
 
-function getXYFromAngles({ x, y, a, b }) {
+function getXYFromAngles({ x, y, r, phi }) {
 
 }
 
@@ -69,12 +68,12 @@ class World {
     this.zAxis = new ZAxis(this, ctx);
   }
   
-  draw({ x, y, z, a, b, stroke, to }) { // to is same things as x y z a b but where it will go to
+  draw({ x, y, z, r, phi, stroke, to }) { // to is same things as x y z a b but where it will go to
     this.drawBackground();
     this.stroke.draw({ stroke, x, y });
-    this.pointer.draw({ x, y, z, a, b });
+    this.pointer.draw({ x, y, z, r, phi });
     this.pointerTo.draw(to);
-    this.zAxis.draw({ z, a, b, to });
+    this.zAxis.draw({ z, r, phi, to });
   }
 
   drawBackground() {
@@ -152,33 +151,41 @@ class Pointer {
     this.type = type;
   }
 
-  draw({ x, y, a, b }) {
-    this.drawLines({ x, y });
-    this.drawBrush({ x, y , a, b });
+  draw({ x, y, r, phi }) {
+    this.drawCricle({ x, y, r });
+    this.drawLines({ x, y, r });
+    this.drawBrush({ x, y , r, phi });
   }
 
-  drawLines({ x, y }) {
+  drawCricle({ x, y, r }) {
+    this.ctx.beginPath();
+    this.ctx.arc(x, y, r, 0, Math.TWO_PI);
+    this.ctx.strokeStyle = POINTER.STROKE_COLOR;
+    this.ctx.stroke();
+  }
+
+  drawLines({ x, y, r }) {
     this.ctx.strokeStyle = POINTER.STROKE_COLOR;
     this.ctx.lineWidth = POINTER.WIDTH;
     this.ctx.beginPath();
-    this.ctx.moveTo(x, y + POINTER.GAP);
-    this.ctx.lineTo(x, y + POINTER.GAP + POINTER.LENGTH);
+    this.ctx.moveTo(x, y + r);
+    this.ctx.lineTo(x, y + r + POINTER.LENGTH);
     this.ctx.stroke();
     this.ctx.beginPath();
-    this.ctx.moveTo(x, y - POINTER.GAP);
-    this.ctx.lineTo(x, y - POINTER.GAP - POINTER.LENGTH);
+    this.ctx.moveTo(x, y - r);
+    this.ctx.lineTo(x, y - r - POINTER.LENGTH);
     this.ctx.stroke();
     this.ctx.beginPath();
-    this.ctx.moveTo(x + POINTER.GAP, y);
-    this.ctx.lineTo(x + POINTER.GAP + POINTER.LENGTH, y);
+    this.ctx.moveTo(x + r, y);
+    this.ctx.lineTo(x + r + POINTER.LENGTH, y);
     this.ctx.stroke();
     this.ctx.beginPath();
-    this.ctx.moveTo(x - POINTER.GAP, y);
-    this.ctx.lineTo(x - POINTER.GAP - POINTER.LENGTH, y);
+    this.ctx.moveTo(x - r, y);
+    this.ctx.lineTo(x - r - POINTER.LENGTH, y);
     this.ctx.stroke();
   }
 
-  drawBrush({ x, y, a, b }) {
+  drawBrush({ x, y, r, phi }) {
     this.ctx.strokeStyle = BRUSH.STROKE_COLOR;
     this.ctx.lineWidth = BRUSH.WIDTH;
 
@@ -187,8 +194,12 @@ class Pointer {
     }
     this.ctx.beginPath();
     this.ctx.moveTo(x, y);
-    // TODO: calculate based on angles
-    this.ctx.lineTo(x + 16, y + 24);
+
+    const rad = Math.toRadians(phi);
+    const dx = Math.cos(rad) * r;
+    const dy = Math.sin(rad) * r;
+    
+    this.ctx.lineTo(x + dx, y + dy);
     this.ctx.stroke();
 
     // this.ctx.beginPath();
@@ -206,9 +217,9 @@ class ZAxis {
     this.ctx = ctx;
   }
 
-  draw({ z, a, b, to }) {
+  draw({ z, r, phi, to }) {
     this.drawBackground();
-    this.drawBrush({ z, a, b }, 'main');
+    this.drawBrush({ z, r, phi }, 'main');
     this.drawBrush(to, 'to');
   }
 
@@ -238,28 +249,37 @@ class ZAxis {
     this.ctx.stroke();
   }
 
-  drawBrush({ z, a, b }, type) {
+  drawBrush({ z, r, phi }, type) {
+    if(type === 'to') {
+      this.ctx.strokeStyle = '#FF0';
+    }
+    const x = this.world.W - (WORLD.Z_AXIS_WIDTH / 2);
+
+    // TODO: treat brush as fixed length
+    let dir = 1;
+    if(phi < 270 && phi > 90) {
+      dir = -1;
+    }
+
+    const theta = Math.asin(r / 30);
+
+    const dz = Math.cos(theta) * 30;
+
+    this.ctx.strokeStyle = POINTER.STROKE_COLOR;
+    this.ctx.lineWidth = POINTER.WIDTH;
+    this.ctx.beginPath();
+    this.ctx.arc(x, z - 30, 60, 0, Math.TWO_PI);
+    this.ctx.stroke();
+
     this.ctx.strokeStyle = BRUSH.STROKE_COLOR;
     this.ctx.lineWidth = BRUSH.WIDTH;
     if(type === 'to') {
       this.ctx.strokeStyle = '#FF0';
     }
-    const x = this.world.W - (WORLD.Z_AXIS_WIDTH / 2);
     this.ctx.beginPath();
-    this.ctx.moveTo(x, 0);
-    
-    // get the total angle and change it to degrees
-    const rad = Math.toRadians(a + b); // TODO: use this to draw the angle
-    
-    this.ctx.lineTo(x + 20, this.world.H * z);
+    this.ctx.moveTo(x, z - 30);
+    this.ctx.lineTo(x + (dir * r), z + dz);
     this.ctx.stroke();
-    
-    this.ctx.beginPath();
-    this.ctx.arc(x + 20, this.world.H * z, 2, 0, Math.TWO_PI);
-    this.ctx.fillStyle = BRUSH.STROKE_COLOR;
-    if(type === 'to') {
-      this.ctx.fillStyle = '#FF0';
-    }
-    this.ctx.fill();
+  
   }
 }
