@@ -21,11 +21,10 @@ html, body {
 }
 
 .container {
-  width: 100%;
+  width: 1220px;
   height: calc(100% - 40px);
-  margin-top: 40px;
+  margin: 40px auto;
   display: flex;
-  position: absolute;
 }
 
 .container-col {

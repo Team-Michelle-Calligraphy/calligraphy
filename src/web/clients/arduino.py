@@ -5,6 +5,7 @@ import serial.tools.list_ports
 # https://www.youtube.com/watch?v=CebbJ7zrAWU
 # https://stackoverflow.com/questions/24214643/python-to-automatically-select-serial-ports-for-arduino
 
+# https://github.com/bborncr/gcodesender.py/blob/master/gcodesender.py
 
 SERIAL = {}
 

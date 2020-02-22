@@ -2,8 +2,31 @@
 /* controller */
 
 .controller {
-  width: 800px;
+  width: 610px;
   background: #303030;
+}
+
+/* coords */
+
+.coords {
+  display: flex;
+  color: #FFF;
+}
+
+.coords-title {
+  padding: 20px;
+  font-size: 12px;
+  min-width: 100px;
+}
+
+.coord {
+  width: 14%;
+}
+
+.coord input {
+  height: 38px;
+  width: 60px;
+
 }
 
 /* view */
@@ -125,9 +148,11 @@
 /* library */
 
 .library {
-  min-width: 480px;
-  width: 100%;
+  width: 610px;
   background: #303030;
+}
+
+.strokes {
   overflow: scroll;
 }
 
@@ -166,6 +191,7 @@
   background: #ddd1;
   box-shadow: 4px 4px 4px #0002, -4px -4px 4px #0002, inset -4px 4px 4px #0001, inset 4px -4px 4px #0001;
   padding-top: 10px;
+  color: #FFF;
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
   -moz-box-sizing: border-box;    /* Firefox, other Gecko */
   box-sizing: border-box;         /* Opera/IE 8+ */

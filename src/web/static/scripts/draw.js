@@ -1,8 +1,18 @@
+
+function buildToCommand({ x, y, z, a, b}) {
+  return `to ${x} ${y} ${z} ${a} ${b}`;
+}
+
+function setPosition(to) {
+  to.to = to;
+  return to;
+}
+
 angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($scope, $http) {
 
   $scope.strokes = [];
   $scope.position = {
-    x: 120,
+    x: 180,
     y: 120,
     z: 120,
     a: 20,
@@ -26,7 +36,7 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
 
     $scope.load()
   }
-  
+
   $scope.load = function () {
     let req = {
       method: 'GET',
@@ -41,13 +51,59 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
     });
   }
 
+  $scope.canvasDraw = function() {
+    $scope.world.draw($scope.position);
+  }
+
   $scope.arrows = function (dir) {
-    // TODO: turn dir into command
+    switch(dir) {
+    case 'north':
+      $scope.position.to.y -= 1;
+      break;
+    case 'south':
+      $scope.position.to.y += 1;
+      break;
+    case 'west':
+      $scope.position.to.x -= 1;
+      break;
+    case 'east':
+      $scope.position.to.x += 1;
+      break;
+    case 'up':
+      $scope.position.to.z -= 1;
+      break;
+    case 'down':
+      $scope.position.to.z += 1;
+      break;
+    case 'a-north':
+      $scope.position.to.a -= 1;
+      break;
+    case 'a-south':
+      $scope.position.to.a += 1;
+      break;
+    case 'a-west':
+      $scope.position.to.b -= 1;
+      break;
+    case 'a-east':
+      $scope.position.to.b += 1;
+      break;
+    }
+  }
+
+  $scope.preview = function (stroke) {
+    $scope.position.stroke = stroke;
+    $scope.canvasDraw();
+  }
+
+  $scope.drawStroke = function (stroke) {
+    console.log(stroke);
     let req = {
       method: 'POST',
       url: '/api/draw',
       headers: { 'Content-Type': 'application/json' },
-      data: { dir }
+      data: {
+        commands: stroke.body
+      }
     };
 
     $http(req)
@@ -58,22 +114,23 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
     });
   }
 
-  $scope.preview = function (stroke) {
-    $scope.position.stroke = stroke;
-    $scope.world.draw($scope.position);
-  }
-
   $scope.moveToCoords = function () {
+    const to = $scope.position.to;
+    commands = buildToCommand(to);
     let req = {
       method: 'POST',
       url: '/api/draw',
       headers: { 'Content-Type': 'application/json' },
-      data: { dir }
+      data: {
+        commands: commands
+      }
     };
 
     $http(req)
       .then(function ({ data }) {
-        $scope.world.draw(data);
+        // TODO: set the local data to the new data, then draw that
+        // $scope.world.draw(data);
+        $scope.postion = setPosition($scope.position.to);
       }, function (error) {
         console.log(error);
     });

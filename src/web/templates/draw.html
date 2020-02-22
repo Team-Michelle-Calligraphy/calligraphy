@@ -6,55 +6,49 @@
 <div class="container" ng-controller="draw" ng-init="init()">
   <div class="container-col controller">
     <div class="controller-row coords">
-        <div class="coods-title">Position</div>
-        <div class="coord-title">
-          <div class="title">x</div>
-          <input class="value" ng-model="position.x" disabled />
-        </div>
-        <div class="coord-title">
-          <div class="title">x</div>
-          <input class="value" ng-model="position.x" disabled />
-        </div>
-        <div class="coord-title">
-          <div class="title">x</div>
-          <input class="value" ng-model="position.x" disabled />
-        </div>
-        <div class="coord-title">
-          <div class="title">x</div>
-          <input class="value" ng-model="position.x" disabled />
-        </div>
-        <div class="coord-title">
-          <div class="title">x</div>
-          <input class="value" ng-model="position.x" disabled />
-        </div>
+      <div class="coords-title">Position</div>
+      <div class="coord">
+        <div class="title">x</div>
+        <input class="value" type="number" ng-model="position.x" disabled />
+      </div>
+      <div class="coord">
+        <div class="title">y</div>
+        <input class="value" type="number" ng-model="position.y" disabled />
+      </div>
+      <div class="coord">
+        <div class="title">z</div>
+        <input class="value" type="number" ng-model="position.z" disabled />
+      </div>
+      <div class="coord">
+        <div class="title">a</div>
+        <input class="value" type="number" ng-model="position.a" disabled />
+      </div>
+      <div class="coord">
+        <div class="title">b</div>
+        <input class="value" type="number" ng-model="position.b" disabled />
+      </div>
     </div>
-    <div class="controller-row view-holder">
-      <canvas id="canvas"></canvas>
-    </div>
-    <div class="controller-row to-coords">
-        <div class="coods-title">Move To</div>
-        <div class="coord-title">
+    <div class="controller-row coords">
+        <div class="coords-title">Move To</div>
+        <div class="coord">
           <div class="title">x</div>
-          <input class="value" ng-model="position.to.x" />
+          <input class="value" type="number" ng-model="position.to.x" />
         </div>
-        <div class="coord-title">
-          <div class="title">x</div>
-          <input class="value" ng-model="position.to.x" />
+        <div class="coord">
+          <div class="title">y</div>
+          <input class="value" type="number" ng-model="position.to.y" />
         </div>
-        <div class="coord-title">
-          <div class="title">x</div>
-          <input class="value" ng-model="position.to.x" />
+        <div class="coord">
+          <div class="title">z</div>
+          <input class="value" type="number" ng-model="position.to.z" />
         </div>
-        <div class="coord-title">
-          <div class="title">x</div>
-          <input class="value" ng-model="position.to.x" />
+        <div class="coord">
+          <div class="title">a</div>
+          <input class="value" type="number" ng-model="position.to.a" />
         </div>
-        <div class="coord-title">
-          <div class="title">x</div>
-          <input class="value" ng-model="position.to.x" />
-        </div>
-        <div class="coords-action">
-          <div class="stroke-action submittable">Move</div>
+        <div class="coord">
+          <div class="title">b</div>
+          <input class="value" type="number" ng-model="position.to.b" />
         </div>
     </div>
     <div class="controller-row button-pad-holder">
@@ -104,25 +98,24 @@
         </div>
       </div>
     </div>
-    <!-- <div class="controller-row view-holder">
-      <div class="action"></div>
-      <div class="action"></div>
-    </div> -->
+    <div class="controller-row view-holder">
+      <div class="stroke-action submittable" ng-click="moveToCoords()">Move</div>
+    </div>
   </div>
   <div class="container-col library">
-    <!-- <div class="scroll up"></div> -->
+    <div class="controller-row view-holder">
+      <canvas id="canvas"></canvas>
+    </div>
     <div class="strokes">
       <div class="stroke" ng-repeat="stroke in strokes track by $index">
         <div class="stroke-title">[[ stroke.name ]]</div>
         <div class="stroke-actions">
-          <div class="stroke-action modifyable">Edit</div>
-          <div class="stroke-action submittable">Draw</div>
+          <!-- TODO: <div class="stroke-action modifyable">Edit</div> -->
+          <div class="stroke-action submittable" ng-click="drawStroke(stroke)">Draw</div>
           <div class="stroke-action previewable" ng-click="preview(stroke)">Preview</div>
         </div>
       </div>
-    <!--  -->
     </div>
-    <!-- <div class="scroll down"></div> -->
   </div>
 </div>
 {% endblock %}
