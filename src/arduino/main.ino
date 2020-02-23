@@ -1,122 +1,43 @@
 
+/*
+ Stepper Motor Control - one revolution
+
+ This program drives a unipolar or bipolar stepper motor.
+ The motor is attached to digital pins 8 - 11 of the Arduino.
+
+ The motor should revolve one revolution in one direction, then
+ one revolution in the other direction.
+
+
+ Created 11 Mar. 2007
+ Modified 30 Nov. 2009
+ by Tom Igoe
+
+ */
+
 #include <Stepper.h>
-#include <Servo.h>
 
-Servo rServo;
-Servo pServo;
+const int stepsPerRevolution = 200;  // change this to fit the number of steps per revolution
+// for your motor
 
-int currentPosition[5] = {0, 0, 0, 0, 0};
-String in;
-int movements[5] = {0, 0, 0, 0, 0};
-int deltas[5] = {0, 0, 0, 0, 0};
-double rates[5] = {0, 0, 0, 0, 0};
-
-const int servo_rangeLow = 0;
-const int servo_rangeHigh = 100;
-
-// initialize the steppers
-int stepsPerRevolution = 200;
-Stepper xStepper(stepsPerRevolution, 10, 11, 12, 13);
-Stepper yStepper(stepsPerRevolution, 6, 7, 8, 9);
-Stepper zStepper(stepsPerRevolution, 2, 3, 4, 5);
-
-
+// initialize the stepper library on pins 8 through 11:
+Stepper myStepper(stepsPerRevolution, 10, 11, 12 ,13);
 
 void setup() {
-  rServo.attach(A0);
-  pServo.attach(A1);
+  // set the speed at 60 rpm:
+  myStepper.setSpeed(60);
   // initialize the serial port:
   Serial.begin(9600);
 }
 
-
-// take input string and turn it into a object
-void parseInput() {
-  int x_index = in.indexOf('x');
-  int y_index = in.indexOf('y');
-  int z_index = in.indexOf('z');
-  int r_index = in.indexOf('r');
-  int p_index = in.indexOf('p');
-  int last_index = in.lastIndexOf(':');
-
-  int size_x = y_index - x_index - 2;
-  int size_y = z_index - y_index - 2;
-  int size_z = r_index - z_index - 2;
-  int size_r = p_index - r_index - 2;
-
-  int x_move = in.substring(x_index + 1, x_index + 1 + size_x).toInt();
-  int y_move = in.substring(y_index + 1, y_index + 1 + size_y).toInt();
-  int z_move = in.substring(z_index + 1, z_index + 1 + size_z).toInt();
-  int r_move = in.substring(r_index + 1, r_index + 1 + size_r).toInt();
-  int p_move = in.substring(p_index + 1, last_index).toInt();
-
-  movements[0] = x_move;
-  movements[1] = y_move;
-  movements[2] = z_move;
-  movements[3] = r_move;
-  movements[4] = p_move;
-
-  Serial.println(movements[0], DEC);
-}
-
-// calculate rate of x, y, z, and angles to make sure they end at the same time
-void deltaDistance() {
-  int x_delt = movements[0] - currentPosition[0];
-  int y_delt = movements[1] - currentPosition[1];
-  int z_delt = movements[2] - currentPosition[2];
-  int r_delt = movements[3] - currentPosition[3];
-  int p_delt = movements[4] - currentPosition[4];
-
-  deltas[0] = x_delt;
-  deltas[1] = y_delt;
-  deltas[2] = z_delt;
-  deltas[3] = r_delt;
-  deltas[4] = p_delt;
-  
-  Serial.println(deltas[0], DEC);
-}
-
-double calculateRates() {
-  double total_distance = pow((pow(movements[0], 2) + pow(movements[0], 2) + pow(movements[0], 2)), .5);
-  double TIME = total_distance;
-
-  rates[0] = abs((deltas[0]) / (TIME));
-  rates[1] = abs((deltas[0]) / (TIME));
-  rates[2] = abs((deltas[0]) / (TIME));
-
-  Serial.println(rates[0], DEC);
-}
-
-// move the motors in a for loop one unit at a time with given delay
-void executeMove() {
-
-  xStepper.setSpeed(rates[0]);
-  yStepper.setSpeed(rates[1]);
-  zStepper.setSpeed(rates[2]);
-
-  xStepper.step(deltas[0]);
-  yStepper.step(deltas[1]);
-  zStepper.step(deltas[2]);
-
-  rServo.write(map(rates[3], servo_rangeLow, servo_rangeHigh, -45, 45));
-  pServo.write(map(rates[4], servo_rangeLow, servo_rangeHigh, -45, 45));
-}
-
-void updateCurrentPosition() {
-  for (int i = 0; i < 5; i++) {
-    currentPosition[i] = movements[i];
-  }
-}
-
 void loop() {
-  if (Serial.available() > 0) {
-    in = Serial.readString();
-    Serial.println(in);
-    parseInput();
-    deltaDistance();
-    calculateRates();
-    executeMove();
-    updateCurrentPosition();
-    Serial.println("ok"); // TODO: can print the current position to confirm?
-  }
+  // step one revolution  in one direction:
+  Serial.println("clockwise");
+  myStepper.step(stepsPerRevolution);
+  delay(500);
+
+  // step one revolution in the other direction:
+  Serial.println("counterclockwise");
+  myStepper.step(-stepsPerRevolution);
+  delay(500);
 }
