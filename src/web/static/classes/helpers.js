@@ -25,10 +25,11 @@ function parseCommands(stroke) {
         y: parseInt(coords[2]),
         z: parseInt(coords[3]),
         r: parseInt(coords[4]),
-        phi: parseInt(coords[5])
+        phi: parseInt(coords[5]) // TODO: error
       });
       break;
     default:
+      // TODO: ERROR
       break;
     }
   });

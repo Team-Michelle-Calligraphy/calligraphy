@@ -1,246 +1,122 @@
 
-/* controller */
+/* canvas */
 
-.controller {
-  width: 610px;
-  background: #303030;
+.container-col.controller {
+  width: 475px;
 }
 
-/* coords */
+.container-col.controller canvas {
+  width: 475px;
+  height: 650px;
+  margin-top: 20px;
+}
 
-.coords {
+/* entry */
+
+.controller-row.coords {
   display: flex;
-  color: #FFF;
+  padding: 10px;
 }
 
-.coords-title {
-  padding: 20px 0;
-  font-size: 12px;
-  min-width: 60px;
+.controller-row.coords .coords-title {
+  color: #333;
+  font-size: 10px;
+  width: 58px;
+  padding-top: 10px;
 }
 
-.coord {
-  width: 98px;
+.controller-row.coords .coord {
   display: flex;
-  background: #ddd1;
-  box-shadow: 4px 4px 4px #0002, -4px -4px 4px #0002, inset -4px 4px 4px #0001, inset 4px -4px 4px #0001;
-  margin: 10px 4px;
-  height: 40px;
-  border-radius: 20px;
-  font-size: 16px;
-  cursor: pointer;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  width: 112px;
+  margin: 0 6px;
 }
 
-.coords.disabled {
-  color: #FFF8;
+.controller-row.coords.disabled .coord {
+  background: #ddd;
 }
 
-.coords.disabled input {
-  color: #FFF8;
-}
-
-.coord .title {
-  padding: 12px 8px;
-  font-size: 12px;
-}
-
-.coord:focus-within {
+.controller-row.coords .coord:focus-within {
   background: #dcf30db2;
-  cursor: pointer;
-  box-shadow: 4px 4px 4px #c4d80e22, -4px -4px 4px #c4d80e22, inset -4px 4px 4px #FFF1, inset 4px -4px 4px #FFF1;
 }
 
-.coord input {
-  height: 38px;
-  width: 60px;
-  background: none;
+.controller-row.coords .coord .title {
+  color: #333;
+  font-size: 10px;
+  width: 15%;
+  text-align: center;
+  margin: 12px 6px;
+}
+
+.controller-row.coords .coord input {
+  width: 85%;
   border: none;
   outline: none;
-  color: #FFF;
+  background: none;
+  font-size: 18px;
   text-align: center;
-  font-size: 16px;
+  padding: 8px;
 }
-
-.coord input:focus {
-  color: #000;
-}
-
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
-}
-
-/* view */
-
-.view-holder {
-  padding: 0 20px;
-  width: calc(100% - 40px);
-}
-
-#canvas {
-  width: 100%;
-  height: 300px;
-  background: #000;
-  box-shadow: 4px 4px 4px #0002, -4px -4px 4px #0002, inset -4px 4px 4px #0001, inset 4px -4px 4px #0001;
-}
-
-/* main actions */
 
 .main-actions {
-  padding: 30px 0 10px;
+  height: 54px;
+  padding-right: 10px;
+  border-bottom: 1px solid #ddd;
 }
 
-/* button pads */
-
-.button-pad-holder {
-  display: flex;
-  padding: 10px;
-}
-
-/* circle buttons */
-
-.circle-button {
-  height: 80px;
-  width: 80px;
-  border-radius: 40px;
+.stroke-action {
+  float: right;
+  padding: 10px 0;
+  border-radius: 4px;
+  min-width: 114px;
   text-align: center;
-  padding-top: 32px;
-  font-size: 22px;
-  font-weight: bold;
-  position: absolute;
-  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-  box-sizing: border-box;         /* Opera/IE 8+ */
-  background: #ddd1;
-  box-shadow: 4px 4px 4px #0002, -4px -4px 4px #0002, inset -4px 4px 4px #0001, inset 4px -4px 4px #0001;
-}
-
-.circle-button.north {
-  top: 4px;
-  left: calc(50% - 40px);
-}
-
-.circle-button.west {
-  top: calc(50% - 40px);
-  left: 4px;
-  transform: rotate(-90deg);
-}
-
-.circle-button.east {
-  top: calc(50% - 40px);
-  left: calc(100% - 84px);
-  transform: rotate(90deg);
-}
-
-.circle-button.south {
-  top: calc(100% - 84px);
-  left: calc(50% - 40px);
-  transform: rotate(180deg);
-}
-
-.arrow {
-  width: 16px;
-  height: 16px;
-  transform: rotate(45deg);
-  top: calc(50% - 8px);
-  left: calc(50% - 10px);
-  position: absolute;
-  border-left: 6px solid #FFF;
-  border-top: 6px solid #FFF;
-}
-
-/* center label */
-
-.center-label {
-  text-align: center;
-  font-size: 14px;
-  position: absolute;
-  top: calc(50% - 7px);
-  width: 100%;
-  color: #FFF;
-}
-
-/* direction pad */
-
-.direction-pad-holder {
-  padding: 10px;
-}
-
-.direction-pad {
-  height: 220px;
-  width: 220px;
-  border-radius: 110px;
-  background: #ddd1;
-  position: relative;
-  box-shadow: 4px 4px 4px #0002, -4px -4px 4px #0002, inset -4px 4px 4px #0001, inset 4px -4px 4px #0001;
-}
-
-/* vertical pad */
-
-.vertical-pad-holder {
-  padding: 10px;
-}
-
-.vertical-pad {
-  width: 90px;
-  height: 220px;
-  background: #ddd1;
-  border-radius: 50px;
-  position: relative;
-
-  box-shadow: 4px 4px 4px #0002, -4px -4px 4px #0002, inset -4px 4px 4px #0001, inset 4px -4px 4px #0001;
+  margin: 6px;
 }
 
 
 /* library */
 
-.library {
-  width: 610px;
-  background: #303030;
+.container-col.library .strokes {
   overflow: scroll;
+  max-height: calc(100% - 200px);
 }
 
-.stroke {
+.strokes .stroke {
   width: 100%;
-  height: 80px;
-  background: #303030;
-  color: #FFF;
-  padding: 30px;
-  border-bottom: 1px solid #ddd1;
-  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-  box-sizing: border-box;         /* Opera/IE 8+ */
-  overflow: hidden;
+  border-bottom: 1px solid #ddd;
 }
 
-.stroke-title {
-  float: left;
+.strokes .stroke .stroke-top {
+  min-height: 80px;
+  display: flex;
+}
+
+.strokes .stroke .stroke-top input.stroke-title {
+  padding: 28px;
   width: 30%;
+  border: none;
+  outline: none;
+  font-size: 16px;
 }
 
-.stroke-actions {
-  float: right;
-  width: 70%;
-  min-width: 360px;
+.strokes .stroke .stroke-top .stroke-actions {
   margin-top: 16px;
+  width: 70%;
 }
 
-.stroke-action {
-  margin: -26px 10px 0;
-  height: 40px;
-  width: 120px;
-  text-align: center;
-  float: right;
-  border-radius: 20px;
-  background: #ddd1;
-  box-shadow: 4px 4px 4px #0002, -4px -4px 4px #0002, inset -4px 4px 4px #0001, inset 4px -4px 4px #0001;
-  padding-top: 10px;
-  color: #FFF;
-  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-  box-sizing: border-box;         /* Opera/IE 8+ */
+.strokes .stroke .edit-stroke {
+  width: 100%;
+  min-height: 180px;
+}
+
+.strokes .stroke .edit-stroke textarea {
+  width: calc(100% - 80px);
+  margin: 40px;
+  height: 100%;
+  font-size: 16px;
+  outline: none;
+  border: 1px solid #ddd;
+  box-shadow: none;
+  padding: 10px;
 }

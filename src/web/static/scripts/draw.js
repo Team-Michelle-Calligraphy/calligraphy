@@ -22,7 +22,7 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
 
-    const W = 570, H = 300; // TODO: these should represent the paper size
+    const W = 950 / 2, H = 1300 / 2; // these should represent the paper size
     canvas.width = W;
     canvas.height = H;
 
@@ -150,8 +150,35 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
     });
   }
 
+  // EDIT
+
   $scope.edit = function (stroke) {
-    window.location = `/edit/${stroke.name}`;
+    stroke.isEditing = true;
+    $scope.preview(stroke);
+  }
+
+  $scope.bodyChange = function (stroke) {
+    $scope.preview(stroke);
+  }
+
+  $scope.save = function (stroke) {
+
+    let req = {
+      method: 'POST',
+      url: '/api/save',
+      headers: { 'Content-Type': 'application/json' },
+      data: JSON.stringify(stroke)
+    };
+
+    $http(req)
+      .then(function ({ data }) {
+        stroke.isEditing = false;
+      }, function ({ data }) {
+        $scope.position = data.pos;
+        $scope.position.to = Object.assign({}, data.pos);
+        $scope.canvasDraw();
+        console.log(data.error);
+    });
   }
 
 }]);
