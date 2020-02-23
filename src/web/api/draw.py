@@ -87,12 +87,32 @@ def api_draw_route():
   for command in commands:
     new_pos = current_pos
     error = ''
+
+    # validations make sure positions don't go out of bounds
+
     if command['type'] == 'to':
+      # convert to commands to abs commands based off of the current position
       error, new_pos = validate_to(command)
-    elif (command['type'] == 'abs'):
+    elif command['type'] == 'abs':
       error, new_pos = validate_abs(command)
-    # elif: down and up preset, 
-    
+    elif command['type'] == 'down':
+      new_pos = {
+        'x': current_pos['x'],
+        'y': current_pos['y'],
+        'z': 50,
+        'r': current_pos['r'],
+        'phi': current_pos['phi'],
+      }
+    elif command['type'] == 'up':
+      new_pos = {
+        'x': current_pos['x'],
+        'y': current_pos['y'],
+        'z': 0,
+        'r': current_pos['r'],
+        'phi': current_pos['phi'],
+      }
+  
+    # if there is an error then  return
     if error != '':
       return jsonify({ 'error': error, 'pos': current_pos }), 302
 
@@ -100,15 +120,11 @@ def api_draw_route():
     command_str = translate(new_pos)
 
     # send the command to the arduino
-    # if not arduino.send(command_str):
-    #   return jsonify({ 'error': 'Unable to connect to port', 'pos': current_pos }), 302
+    if not arduino.send(command_str):
+      return jsonify({ 'error': 'Unable to connect to port', 'pos': current_pos }), 302
 
-    
     # set the current position to this new position
     current_pos = new_pos
 
-  # validations should make sure positions don't go out of bounds
-  # should convert all to commands to abs commands based off of the current position
-  # send commands one at a time to: arduino.send(command)
-
+  # return with the final new position
   return jsonify(current_pos), 200

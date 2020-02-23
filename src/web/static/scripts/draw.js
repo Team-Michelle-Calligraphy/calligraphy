@@ -66,7 +66,7 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
         $scope.position.to = Object.assign({}, data.position);
         $scope.strokes = data.strokes;
         $scope.ports = data.ports;
-        $scope.selectedPort = data.portOptions;
+        $scope.selectedPort = data.selectedPort;
         $scope.canvasDraw();
       }, function (error) { 
         console.log(error);
@@ -155,6 +155,17 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
     const command = Object.assign({}, $scope.position.to);
     command.type = 'abs';
     $scope.drawCall([command]);
+  }
+
+  $scope.dip = function() {
+    commands = [
+      { type: 'up' },
+      { type: 'abs', x: 10, y: 10, z: 50, r: 0, phi: 0 },
+      { type: 'down' },
+      { type: 'abs', x: 10, y: 10, z: 0, r: 0, phi: 0 },
+      { type: 'up' }
+    ];
+    $scope.drawCall(commands);
   }
 
   $scope.drawCall = function (commands) {
