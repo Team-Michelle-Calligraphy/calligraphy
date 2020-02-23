@@ -1,4 +1,27 @@
 
+const BOUNDS = {
+  'x': {
+    'min': 0,
+    'max': 475
+  },
+  'y': {
+    'min': 0,
+    'max': 650
+  },
+  'z': {
+    'min': 0,
+    'max': 100
+  },
+  'r': {
+    'min': 0,
+    'max': 45
+  },
+  'phi': {
+    'min': 0,
+    'max': 360
+  }
+}
+
 angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($scope, $http) {
 
   // SETUP
@@ -68,42 +91,6 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
     });
   }
 
-  $scope.arrows = function (dir) {
-    switch(dir) {
-    case 'north':
-      $scope.position.to.y -= 1;
-      break;
-    case 'south':
-      $scope.position.to.y += 1;
-      break;
-    case 'west':
-      $scope.position.to.x -= 1;
-      break;
-    case 'east':
-      $scope.position.to.x += 1;
-      break;
-    case 'up':
-      $scope.position.to.z -= 1;
-      break;
-    case 'down':
-      $scope.position.to.z += 1;
-      break;
-    case 'a-north':
-      $scope.position.to.r -= 1;
-      break;
-    case 'a-south':
-      $scope.position.to.r += 1;
-      break;
-    case 'a-west':
-      $scope.position.to.phi -= 1;
-      break;
-    case 'a-east':
-      $scope.position.to.phi += 1;
-      break;
-    }
-    $scope.canvasDraw();
-  }
-
   // CANVAS
 
   $scope.preview = function (stroke) {
@@ -116,6 +103,48 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
   }
 
   // DRAW
+
+  $scope.updateCoord = function(coord) {
+    console.log('updateCoord', coord, $scope.position.to);
+    switch (coord) {
+    case 'x':
+      if ($scope.position.to.x < BOUNDS.x.min) {
+        $scope.position.to.x = BOUNDS.x.min;
+      } else if ($scope.position.to.x > BOUNDS.x.max) {
+        $scope.position.to.x = BOUNDS.x.max;
+      }
+      break;
+    case 'y':
+      if ($scope.position.to.y < BOUNDS.y.min) {
+        $scope.position.to.y = BOUNDS.y.min;
+      } else if ($scope.position.to.y > BOUNDS.y.max) {
+        $scope.position.to.y = BOUNDS.y.max;
+      }
+      break;
+    case 'z':
+      if ($scope.position.to.z < BOUNDS.z.min) {
+        $scope.position.to.z = BOUNDS.z.min;
+      } else if ($scope.position.to.z > BOUNDS.z.max) {
+        $scope.position.to.z = BOUNDS.z.max;
+      }
+      break;
+    case 'r':
+      if ($scope.position.to.r < BOUNDS.r.min) {
+        $scope.position.to.r = BOUNDS.r.min;
+      } else if ($scope.position.to.r > BOUNDS.r.max) {
+        $scope.position.to.r = BOUNDS.r.max;
+      }
+      break;
+    case 'phi':
+      if ($scope.position.to.phi < BOUNDS.phi.min) {
+        $scope.position.to.phi = BOUNDS.phi.max - (BOUNDS.phi.min - $scope.position.to.phi);
+      } else if ($scope.position.to.phi > BOUNDS.phi.max) {
+        $scope.position.to.phi = BOUNDS.phi.min + ($scope.position.to.phi % BOUNDS.phi.max);
+      }
+      break;
+    }
+    $scope.canvasDraw();
+  }
 
   $scope.drawStroke = function (stroke) {
     const commands = parseCommands(stroke);

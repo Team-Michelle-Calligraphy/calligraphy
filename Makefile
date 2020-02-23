@@ -2,4 +2,4 @@
 default: serve
 
 serve:
-	python web/main.py
+	python src/web/main.py
