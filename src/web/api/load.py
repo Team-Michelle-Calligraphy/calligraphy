@@ -1,5 +1,6 @@
 from flask import *
 import os
+from clients import arduino
 
 api_load = Blueprint('api_load', __name__, template_folder='templates')
 
@@ -26,7 +27,8 @@ def api_load_route():
       file.close()
 
   data = {
-    'strokes': strokes
+    'strokes': strokes,
+    'ports': arduino.PORTS
   }
 
   return jsonify(data), 200

@@ -4,6 +4,7 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
   // SETUP
 
   $scope.strokes = [];
+  $scope.ports = [];
   $scope.position = {
     x: 180,
     y: 120,
@@ -27,7 +28,7 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
     $scope.world = new World(ctx, W, H);
     $scope.world.draw($scope.position);
 
-    $scope.load()
+    $scope.load();
   }
 
   $scope.load = function () {
@@ -38,7 +39,9 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
 
     $http(req)
       .then(function ({ data }) {
+        console.log(data);
         $scope.strokes = data.strokes;
+        $scope.ports = data.ports;
       }, function (error) { 
         console.log(error);
     });

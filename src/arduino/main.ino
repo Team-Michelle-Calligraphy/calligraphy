@@ -6,18 +6,16 @@ Servo rServo;
 Servo pServo;
 
 int currentPosition[5] = {0,0,0,0,0};
-
-int deltas[5] = {0,0,0,0,0};
 String in;
-double rates[5] = {0,0,0,0,0};
 int movements[5] = {0,0,0,0,0};
+int deltas[5] = {0,0,0,0,0};
+double rates[5] = {0,0,0,0,0};
 
 const int servo_rangeLow = 0;
 const int servo_rangeHigh = 100;
 
-int stepsPerRevolution = 200;
-
 // initialize the steppers
+int stepsPerRevolution = 200;
 Stepper xStepper(stepsPerRevolution, 10, 11,12, 13);
 Stepper yStepper(stepsPerRevolution, 6, 7, 8, 9);
 Stepper zStepper(stepsPerRevolution, 2, 3, 4, 5);
@@ -29,26 +27,6 @@ void setup() {
   pServo.attach(A1);
   // initialize the serial port:
   Serial.begin(9600);
-}
-
-// calculate rate of x, y, z, and angles to make sure they end at the same time
- void delta_distance() {
-  int x_delt = movements[0] - currentPosition[0];
-  int y_delt = movements[1] - currentPosition[1];
-  int z_delt = movements[2] - currentPosition[2];
-  int r_delt = movements[3]- currentPosition[3];
-  int p_delt = movements - currentPosition[4];
-
-  int deltas[5] = {x_delt, y_delt, z_delt, r_delt, p_delt};
-}
-
-double calculateRates() {
-  double total_distance = pow((pow(movements[0],2) + pow(movements[0],2) + pow(movements[0],2)), .5);
-  double TIME = total_distance;
-  rates[0] = abs((movements[0])/(TIME));
-  rates[1] = abs((movements[0])/(TIME));
-  rates[2] = abs((movements[0])/(TIME));
-  
 }
 
 
@@ -81,6 +59,26 @@ void parseInput() {
   
 }
 
+// calculate rate of x, y, z, and angles to make sure they end at the same time
+ void delta_distance() {
+  int x_delt = movements[0] - currentPosition[0];
+  int y_delt = movements[1] - currentPosition[1];
+  int z_delt = movements[2] - currentPosition[2];
+  int r_delt = movements[3]- currentPosition[3];
+  int p_delt = movements[4] - currentPosition[4];
+
+  int deltas[5] = {x_delt, y_delt, z_delt, r_delt, p_delt};
+}
+
+double calculateRates() {
+  double total_distance = pow((pow(movements[0],2) + pow(movements[0],2) + pow(movements[0],2)), .5);
+  double TIME = total_distance;
+  rates[0] = abs((movements[0])/(TIME));
+  rates[1] = abs((movements[0])/(TIME));
+  rates[2] = abs((movements[0])/(TIME));
+  
+}
+
 // move the motors in a for loop one unit at a time with given delay
 void executeMove() {
 
@@ -97,6 +95,12 @@ void executeMove() {
   pServo.write(map(rates[4], servo_rangeLow, servo_rangeHigh, -45, 45));
 }
 
+void updateCurrentPosition() {
+  for(int i = 0; i < 5; i++) {
+    currentPosition[i] = movements[i];
+  }
+}
+
 void loop() {
   
   if(Serial.available()) {
@@ -105,5 +109,6 @@ void loop() {
     delta_distance();
     calculateRates();
     executeMove();
-    }
+    updateCurrentPosition();
   }
+}

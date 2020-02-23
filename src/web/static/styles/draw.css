@@ -88,6 +88,12 @@ input[type=number]::-webkit-outer-spin-button {
   box-shadow: 4px 4px 4px #0002, -4px -4px 4px #0002, inset -4px 4px 4px #0001, inset 4px -4px 4px #0001;
 }
 
+/* main actions */
+
+.main-actions {
+  padding: 30px 0 10px;
+}
+
 /* button pads */
 
 .button-pad-holder {

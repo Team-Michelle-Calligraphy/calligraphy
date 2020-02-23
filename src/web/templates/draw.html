@@ -3,116 +3,128 @@
 <script src="/static/classes/canvas.js"></script>
 <script src="/static/scripts/draw.js"></script>
 
-<div class="container" ng-controller="draw" ng-init="init()">
-  <div class="container-col controller">
-    <div class="controller-row coords disabled">
-      <div class="coords-title">Position</div>
-      <div class="coord">
-        <div class="title">x</div>
-        <input class="value" type="number" ng-model="position.x" disabled />
-      </div>
-      <div class="coord">
-        <div class="title">y</div>
-        <input class="value" type="number" ng-model="position.y" disabled />
-      </div>
-      <div class="coord">
-        <div class="title">z</div>
-        <input class="value" type="number" ng-model="position.z" disabled />
-      </div>
-      <div class="coord">
-        <div class="title">r</div>
-        <input class="value" type="number" ng-model="position.r" disabled />
-      </div>
-      <div class="coord">
-        <div class="title">phi</div>
-        <input class="value" type="number" ng-model="position.phi" disabled />
-      </div>
+<div class="page" ng-controller="draw" ng-init="init()">
+  <div class="header">
+    <div class="title">
+      Shotobot
     </div>
-    <div class="controller-row view-holder">
-      <canvas id="canvas"></canvas>
-    </div>
-    <div class="controller-row coords enabled">
-        <div class="coords-title">Move To</div>
+    <select>
+      <option ng-repeat="option in ports">[[option]]</option>
+    </select>
+  </div>
+
+  <div class="container">
+    <div class="container-col controller">
+      <div class="controller-row coords disabled">
+        <div class="coords-title">Position</div>
         <div class="coord">
           <div class="title">x</div>
-          <input class="value" type="number" ng-model="position.to.x" ng-change="canvasDraw()"/>
+          <input class="value" type="number" ng-model="position.x" disabled />
         </div>
         <div class="coord">
           <div class="title">y</div>
-          <input class="value" type="number" ng-model="position.to.y" ng-change="canvasDraw()"/>
+          <input class="value" type="number" ng-model="position.y" disabled />
         </div>
         <div class="coord">
           <div class="title">z</div>
-          <input class="value" type="number" ng-model="position.to.z" ng-change="canvasDraw()" />
+          <input class="value" type="number" ng-model="position.z" disabled />
         </div>
         <div class="coord">
           <div class="title">r</div>
-          <input class="value" type="number" ng-model="position.to.r" ng-change="canvasDraw()" />
+          <input class="value" type="number" ng-model="position.r" disabled />
         </div>
         <div class="coord">
           <div class="title">phi</div>
-          <input class="value" type="number" ng-model="position.to.phi" ng-change="canvasDraw()" />
+          <input class="value" type="number" ng-model="position.phi" disabled />
         </div>
-    </div>
-    <div class="controller-row button-pad-holder">
-      <div class="direction-pad-holder">
-        <div class="direction-pad">
-          <div class="center-label">x,y</div>
-          <div class="circle-button north previewable" ng-click="arrows('north')">
-            <div class="arrow"></div>
+      </div>
+      <div class="controller-row view-holder">
+        <canvas id="canvas"></canvas>
+      </div>
+      <div class="controller-row coords enabled">
+          <div class="coords-title">Move To</div>
+          <div class="coord">
+            <div class="title">x</div>
+            <input class="value" type="number" ng-model="position.to.x" ng-change="canvasDraw()"/>
           </div>
-          <div class="circle-button west previewable" ng-click="arrows('west')">
-            <div class="arrow"></div>
+          <div class="coord">
+            <div class="title">y</div>
+            <input class="value" type="number" ng-model="position.to.y" ng-change="canvasDraw()"/>
           </div>
-          <div class="circle-button east previewable" ng-click="arrows('east')">
-            <div class="arrow"></div>
+          <div class="coord">
+            <div class="title">z</div>
+            <input class="value" type="number" ng-model="position.to.z" ng-change="canvasDraw()" />
           </div>
-          <div class="circle-button south previewable" ng-click="arrows('south')">
-            <div class="arrow"></div>
+          <div class="coord">
+            <div class="title">r</div>
+            <input class="value" type="number" ng-model="position.to.r" ng-change="canvasDraw()" />
+          </div>
+          <div class="coord">
+            <div class="title">phi</div>
+            <input class="value" type="number" ng-model="position.to.phi" ng-change="canvasDraw()" />
+          </div>
+      </div>
+      <div class="controller-row main-actions">
+        <div class="stroke-action submittable" ng-click="moveToCoords()">Move</div>
+        <div class="stroke-action submittable" ng-click="moveToCoords()">Dip</div>
+      </div>
+      <div class="controller-row button-pad-holder">
+        <div class="direction-pad-holder">
+          <div class="direction-pad">
+            <div class="center-label">x,y</div>
+            <div class="circle-button north previewable" ng-click="arrows('north')">
+              <div class="arrow"></div>
+            </div>
+            <div class="circle-button west previewable" ng-click="arrows('west')">
+              <div class="arrow"></div>
+            </div>
+            <div class="circle-button east previewable" ng-click="arrows('east')">
+              <div class="arrow"></div>
+            </div>
+            <div class="circle-button south previewable" ng-click="arrows('south')">
+              <div class="arrow"></div>
+            </div>
+          </div>
+        </div>
+        <div class="vertical-pad-holder">
+          <div class="vertical-pad">
+            <div class="center-label">z</div>
+            <div class="circle-button north previewable" ng-click="arrows('up')">
+              <div class="arrow"></div>
+            </div>
+            <div class="circle-button south previewable" ng-click="arrows('down')">
+              <div class="arrow"></div>
+            </div>
+          </div>
+        </div>
+        <div class="direction-pad-holder">
+          <div class="direction-pad">
+            <div class="center-label">r,phi</div>
+            <div class="circle-button north previewable" ng-click="arrows('a-north')">
+              <div class="arrow"></div>
+            </div>
+            <div class="circle-button west previewable" ng-click="arrows('a-west')">
+              <div class="arrow"></div>
+            </div>
+            <div class="circle-button east previewable" ng-click="arrows('a-east')">
+              <div class="arrow"></div>
+            </div>
+            <div class="circle-button south previewable" ng-click="arrows('a-south')">
+              <div class="arrow"></div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="vertical-pad-holder">
-        <div class="vertical-pad">
-          <div class="center-label">z</div>
-          <div class="circle-button north previewable" ng-click="arrows('up')">
-            <div class="arrow"></div>
-          </div>
-          <div class="circle-button south previewable" ng-click="arrows('down')">
-            <div class="arrow"></div>
-          </div>
-        </div>
-      </div>
-      <div class="direction-pad-holder">
-        <div class="direction-pad">
-          <div class="center-label">r,phi</div>
-          <div class="circle-button north previewable" ng-click="arrows('a-north')">
-            <div class="arrow"></div>
-          </div>
-          <div class="circle-button west previewable" ng-click="arrows('a-west')">
-            <div class="arrow"></div>
-          </div>
-          <div class="circle-button east previewable" ng-click="arrows('a-east')">
-            <div class="arrow"></div>
-          </div>
-          <div class="circle-button south previewable" ng-click="arrows('a-south')">
-            <div class="arrow"></div>
-          </div>
-        </div>
-      </div>
     </div>
-    <div class="controller-row view-holder">
-      <div class="stroke-action submittable" ng-click="moveToCoords()">Move</div>
-    </div>
-  </div>
-  <div class="container-col library">
-    <div class="strokes">
-      <div class="stroke" ng-repeat="stroke in strokes track by $index">
-        <div class="stroke-title">[[ stroke.name ]]</div>
-        <div class="stroke-actions">
-          <!-- TODO: <div class="stroke-action modifyable">Edit</div> -->
-          <div class="stroke-action submittable" ng-click="drawStroke(stroke)">Draw</div>
-          <div class="stroke-action previewable" ng-click="preview(stroke)">Preview</div>
+    <div class="container-col library">
+      <div class="strokes">
+        <div class="stroke" ng-repeat="stroke in strokes track by $index">
+          <div class="stroke-title">[[ stroke.name ]]</div>
+          <div class="stroke-actions">
+            <!-- TODO: <div class="stroke-action modifyable">Edit</div> -->
+            <div class="stroke-action submittable" ng-click="drawStroke(stroke)">Draw</div>
+            <div class="stroke-action previewable" ng-click="preview(stroke)">Preview</div>
+          </div>
         </div>
       </div>
     </div>

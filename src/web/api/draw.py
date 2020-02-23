@@ -7,11 +7,23 @@ api_draw = Blueprint('api_draw', __name__, template_folder='templates')
 
 # GLOBALS
 BOUNDS = {
-  'x': 270,
-  'y': 330,
-  'z': 90,
-  'r': 30,
-  'phi': 360
+  'x': {
+    'min': 0,
+    'max': 600
+  },
+  'y': {
+    'min': 0,
+    'max': 600
+  },
+  'z': {
+    'min': 0,
+    'max': 600
+  },
+  'r': {
+    'min': 0,
+    'max': 45
+  }
+  # no min and max for phi
 }
 
 current_pos = {
@@ -23,17 +35,18 @@ current_pos = {
 }
 
 def validate_position(pos):
-  if pos['x'] > BOUNDS['x'] or pos['x'] < 0:
-    return False
-  if pos['y'] > BOUNDS['y'] or pos['y'] < 0:
-    return False
-  if pos['z'] > BOUNDS['z'] or pos['z'] < 0:
-    return False
-  if pos['r'] > BOUNDS['r'] or pos['r'] < 0:
-    return False
-  if pos['phi'] > BOUNDS['phi'] or pos['phi'] < 0:
-    return False
-  return pos
+  if pos['x'] > BOUNDS['x'] or pos['x'] < BOUNDS['x']['min']:
+    return 'X out of bounds' + str(pos['x']), {}
+  if pos['y'] > BOUNDS['y'] or pos['y'] < BOUNDS['y']['min']:
+    return 'Y out of bounds' + str(pos['y']), {}
+  if pos['z'] > BOUNDS['z'] or pos['z'] < BOUNDS['z']['min']:
+    return 'Z out of bounds' + str(pos['z']), {}
+  if pos['r'] > BOUNDS['r']['max'] or pos['r'] < BOUNDS['r']['min']:
+    return 'R out of bounds' + str(pos['r']), {}
+  
+  # go in a circle for phi, if it's over 360 or under -360 just go to the new one
+  pos['phi'] = pos['phi'] % 360
+  return '', pos
 
 
 def validate_to(command):
@@ -56,6 +69,10 @@ def validate_abs(command):
   }
   return validate_position(new_pos)
 
+def translate(new_pos):
+  return 'x' + str(new_pos['x']) + ':y' + str(new_pos['y']) + ':z' + str(new_pos['z']) + ':r' + str(new_pos['r']) + ':p' + str(new_pos['phi']) + ':'
+
+
 # ------------------------------------------------------------------------------
 # REQUIRES:
 # MODIFIES:
@@ -68,23 +85,24 @@ def api_draw_route():
 
   commands = data['commands']
   for command in commands:
-    print(command)
     new_pos = current_pos
+    error = ''
     if command['type'] == 'to':
-      new_pos = validate_to(command)
+      error, new_pos = validate_to(command)
     elif (command['type'] == 'abs'):
-      new_pos = validate_abs(command)
+      error, new_pos = validate_abs(command)
     # elif: down and up preset, 
     
-    if new_pos == False:
-      return jsonify({}), 302
+    if error != '':
+      return jsonify({ 'error': error }), 302
 
     # convert the position to a command
-    # command_stirng = translate(new_pos)
+    command_str = translate(new_pos)
 
     # send the command to the arduino
-    arduino.send('1') # command_string
+    arduino.send(command_str)
     
+    # set the current position to this new position
     current_pos = new_pos
 
   # validations should make sure positions don't go out of bounds

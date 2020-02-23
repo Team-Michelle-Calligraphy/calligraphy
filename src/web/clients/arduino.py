@@ -17,25 +17,24 @@ import serial.tools.list_ports
 #     SERIAL = False
 #     return False
 
-# SERIAL = False
-# PORTS = list(serial.tools.list_ports.comports())
-# for p in PORTS:
-#   if 'Arduino' in p and setSerial(p):
-#     # if this says arduino and setting it works then stop here
-#     break
-# if not SERIAL:
-#   setSerial('/dev/cu.usbmodem14601') # TODO: pull from the enviornment, allow user to set manually
+SERIAL = False
+PORTS = list(serial.tools.list_ports.comports())
+
+port_options = []
+
+for p in PORTS:
+  if 'Arduino' in p[0] and setSerial(p[0]):
+    # if this says arduino and setting it works then stop here
+    break
+
 
 SERIAL = serial.Serial('/dev/cu.usbmodem14601', 9600)
 
 # sends a string to the port
 def send(message):
-  # TODO: attach 's-<type>-<timestamp>' before the string
+  print(message)
   SERIAL.write(str(message))
-  # while True:
-  #   resp = read()
-  #   print(resp)
 
 # reads the serial to get info from the machine
-def read():
-  return SERIAL.read()
+# def read():
+#   return SERIAL.read()
