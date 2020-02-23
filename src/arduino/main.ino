@@ -1,65 +1,71 @@
 
-/*
- Stepper Motor Control - one revolution
-
- This program drives a unipolar or bipolar stepper motor.
- The motor is attached to digital pins 8 - 11 of the Arduino.
-
- The motor should revolve one revolution in one direction, then
- one revolution in the other direction.
-
-
- Created 11 Mar. 2007
- Modified 30 Nov. 2009
- by Tom Igoe
-
- */
-
 #include <Stepper.h>
 #include <Servo.h>
 
 Servo rServo;
 Servo pServo;
 
+int currentPosition[5] = {0,0,0,0,0};
+
+int deltas[5] = {0,0,0,0,0};
+String in;
+double rates[5] = {0,0,0,0,0};
+int movements[5] = {0,0,0,0,0};
+
+const int servo_rangeLow = 0;
+const int servo_rangeHigh = 100;
+
+int stepsPerRevolution = 200;
 
 // initialize the steppers
 Stepper xStepper(stepsPerRevolution, 10, 11,12, 13);
 Stepper yStepper(stepsPerRevolution, 6, 7, 8, 9);
 Stepper zStepper(stepsPerRevolution, 2, 3, 4, 5);
 
+
+
 void setup() {
-  // set the speed of stepper at 60 rpm:
-  myStepper.setSpeed(60);
-   myservo.attach(9);
+  rServo.attach(A0);
+  pServo.attach(A1);
   // initialize the serial port:
   Serial.begin(9600);
 }
 
 // calculate rate of x, y, z, and angles to make sure they end at the same time
-char[] calculateRates(int x, int y, int z, int r, int p) {
-  double t_distance = pow((pow(x,2) + pow(y,2) + pow(z,2)), .5);
-  double TIME = t_distance;
-  double x_rate = (x)/(TIME);
-  double y_rate = (y)/(TIME);
-  double z_rate = (z)/(TIME);
-  
-  return char[3] = {x_rate, y_rate, z_rate};
+ void delta_distance() {
+  int x_delt = movements[0] - currentPosition[0];
+  int y_delt = movements[1] - currentPosition[1];
+  int z_delt = movements[2] - currentPosition[2];
+  int r_delt = movements[3]- currentPosition[3];
+  int p_delt = movements - currentPosition[4];
+
+  int deltas[5] = {x_delt, y_delt, z_delt, r_delt, p_delt};
 }
 
+double calculateRates() {
+  double total_distance = pow((pow(movements[0],2) + pow(movements[0],2) + pow(movements[0],2)), .5);
+  double TIME = total_distance;
+  rates[0] = abs((movements[0])/(TIME));
+  rates[1] = abs((movements[0])/(TIME));
+  rates[2] = abs((movements[0])/(TIME));
+  
+}
+
+
 // take input string and turn it into a object
-char[] parseInput(char[] in) {
+void parseInput() {
   int x_index = in.indexOf('x');
   int y_index = in.indexOf('y');
   int z_index = in.indexOf('z');
   int r_index = in.indexOf('r');
-  int phi_index = in.indexOf('p');
-  int last_index = in.lastIndexOf(':'):
+  int p_index = in.indexOf('p');
+  int last_index = in.lastIndexOf(':');
 
-  int size_x = y_index - x_index -1;
-  int size_y = z_index - y_index -1;
-  int size_z = r_index - z_index -1;
-  int size_r = phi_index - r_index -1;
-  int size_phi = last_index - phi_index -1;
+  int size_x = y_index - x_index -2;
+  int size_y = z_index - y_index -2;
+  int size_z = r_index - z_index -2;
+  int size_r = p_index - r_index -2;
+  int size_p = last_index - p_index -2;
 
   int x_move = in.substring(x_index+1, x_index + 1 + size_x).toInt();
   int y_move = in.substring(y_index+1, y_index + 1 + size_y).toInt();
@@ -67,35 +73,37 @@ char[] parseInput(char[] in) {
   int r_move = in.substring(r_index+1, r_index + 1 + size_r).toInt();
   int p_move = in.substring(p_index+1, p_index + 1 + size_p).toInt();
 
-  return char[5] movements = {x_move, y_move, z_move, r_move, p_move};
+  movements[0] = x_move;
+  movements[1] = y_move;
+  movements[2] = z_move;
+  movements[3] = r_move;
+  movements[4] = p_move;
   
 }
 
 // move the motors in a for loop one unit at a time with given delay
-void executeMove(int rx, int ry, int rz, int rr, int rp) {
-  x_stepsPerRev = rx;
-  y_stepsPerRev = ry;
-  z_stepsPerRev = rz;
+void executeMove() {
 
-  xStepper.step(x_stepsPerRev);
-  yStepper.step(y_stepsPerRev);
-  zStepper.step(z_stepsPerRev);
+  xStepper.setSpeed(rates[0]);
+  xStepper.setSpeed(rates[1]);
+  xStepper.setSpeed(rates[2]);
 
-  rServo.write(map(rr, servo_rangeLow, servo_rangeHigh, -45, 45)));
-  pServo.write(map(rp, servo_rangeLow, servo_rangeHigh, -45, 45)));
   
-  delay(500);
-  val = map(val, 0, 1023, -45, 45);
-  myservo.write(val);
+  xStepper.step(deltas[0]);
+  yStepper.step(deltas[1]);
+  zStepper.step(deltas[2]);
+
+  rServo.write(map(rates[3], servo_rangeLow, servo_rangeHigh, -45, 45));
+  pServo.write(map(rates[4], servo_rangeLow, servo_rangeHigh, -45, 45));
 }
 
 void loop() {
   
   if(Serial.available()) {
-    char[] in = Serial.read();
-    char[] movements = parseInput(in);
-    char[] rates = calculateRates(movements[0], movements[1], movements[2], movements[3], movements[4]);
-    executeMove(rates[0], rates[1], rates[2], rates[3], rates[4]);
+    in = Serial.read();
+    parseInput();
+    delta_distance();
+    calculateRates();
+    executeMove();
     }
   }
-    
