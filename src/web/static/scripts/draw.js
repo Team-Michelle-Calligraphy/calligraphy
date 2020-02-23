@@ -152,6 +152,14 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
 
   // EDIT
 
+  $scope.addNew = function () {
+    $scope.strokes.push({
+      name: 'New Stroke',
+      body: 'down\n\nup',
+      isEditing: true
+    });
+  }
+
   $scope.edit = function (stroke) {
     stroke.isEditing = true;
     $scope.preview(stroke);
@@ -161,8 +169,13 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
     $scope.preview(stroke);
   }
 
-  $scope.save = function (stroke) {
+  $scope.delete = function (stroke) {
+    stroke.body = '';
+    $scope.save(stroke);
+    $scope.strokes = $scope.strokes.filter(s => s.name !== stroke.name);
+  }
 
+  $scope.save = function (stroke) {
     let req = {
       method: 'POST',
       url: '/api/save',

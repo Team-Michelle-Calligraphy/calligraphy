@@ -116,15 +116,18 @@
       <div class="controller-row main-actions">
         <div class="stroke-action submittable" ng-click="moveToCoords()">Move</div>
         <div class="stroke-action submittable" ng-click="moveToCoords()">Dip</div>
+        <div class="stroke-action modifyable" ng-click="addNew()">Add New</div>
       </div>
       <div class="strokes">
         <div class="stroke" ng-repeat="stroke in strokes track by $index">
           <div class="stroke-top">
             <input class="stroke-title" type="text" ng-model="stroke.name" ng-disabled="!stroke.isEditing" />
             <div class="stroke-actions">
-              <div class="stroke-action modifyable" ng-click="edit(stroke)">Edit</div>
+              <div class="stroke-action submittable" ng-click="delete(stroke)" ng-show="stroke.isEditing">Delete</div>
+              <div class="stroke-action submittable" ng-click="save(stroke)" ng-show="stroke.isEditing">Save</div>
+              <div class="stroke-action modifyable" ng-click="edit(stroke)" ng-hide="stroke.isEditing">Edit</div>
               <div class="stroke-action submittable" ng-click="drawStroke(stroke)">Draw</div>
-              <div class="stroke-action previewable" ng-click="preview(stroke)">Preview</div>
+              <div class="stroke-action previewable" ng-click="preview(stroke)" ng-hide="stroke.isEditing">Preview</div>
             </div>
           </div>
           <div class="edit-stroke" ng-show="stroke.isEditing">
