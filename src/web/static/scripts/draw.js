@@ -1,26 +1,4 @@
 
-const BOUNDS = {
-  'x': {
-    'min': 0,
-    'max': 475
-  },
-  'y': {
-    'min': 0,
-    'max': 650
-  },
-  'z': {
-    'min': 0,
-    'max': 100
-  },
-  'r': {
-    'min': 0,
-    'max': 45
-  },
-  'phi': {
-    'min': 0,
-    'max': 360
-  }
-}
 
 angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($scope, $http) {
 
@@ -67,6 +45,7 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
         $scope.strokes = data.strokes;
         $scope.ports = data.ports;
         $scope.selectedPort = data.selectedPort;
+        $scope.BOUNDS = data.bounds;
         $scope.canvasDraw();
       }, function (error) { 
         console.log(error);
@@ -108,38 +87,38 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
     console.log('updateCoord', coord, $scope.position.to);
     switch (coord) {
     case 'x':
-      if ($scope.position.to.x < BOUNDS.x.min) {
-        $scope.position.to.x = BOUNDS.x.min;
-      } else if ($scope.position.to.x > BOUNDS.x.max) {
-        $scope.position.to.x = BOUNDS.x.max;
+      if ($scope.position.to.x < $scope.BOUNDS.x.min) {
+        $scope.position.to.x = $scope.BOUNDS.x.min;
+      } else if ($scope.position.to.x > $scope.BOUNDS.x.max) {
+        $scope.position.to.x = $scope.BOUNDS.x.max;
       }
       break;
     case 'y':
-      if ($scope.position.to.y < BOUNDS.y.min) {
-        $scope.position.to.y = BOUNDS.y.min;
-      } else if ($scope.position.to.y > BOUNDS.y.max) {
-        $scope.position.to.y = BOUNDS.y.max;
+      if ($scope.position.to.y < $scope.BOUNDS.y.min) {
+        $scope.position.to.y = $scope.BOUNDS.y.min;
+      } else if ($scope.position.to.y > $scope.BOUNDS.y.max) {
+        $scope.position.to.y = $scope.BOUNDS.y.max;
       }
       break;
     case 'z':
-      if ($scope.position.to.z < BOUNDS.z.min) {
-        $scope.position.to.z = BOUNDS.z.min;
-      } else if ($scope.position.to.z > BOUNDS.z.max) {
-        $scope.position.to.z = BOUNDS.z.max;
+      if ($scope.position.to.z < $scope.BOUNDS.z.min) {
+        $scope.position.to.z = $scope.BOUNDS.z.min;
+      } else if ($scope.position.to.z > $scope.BOUNDS.z.max) {
+        $scope.position.to.z = $scope.BOUNDS.z.max;
       }
       break;
     case 'r':
-      if ($scope.position.to.r < BOUNDS.r.min) {
-        $scope.position.to.r = BOUNDS.r.min;
-      } else if ($scope.position.to.r > BOUNDS.r.max) {
-        $scope.position.to.r = BOUNDS.r.max;
+      if ($scope.position.to.r < $scope.BOUNDS.r.min) {
+        $scope.position.to.r = $scope.BOUNDS.r.min;
+      } else if ($scope.position.to.r > $scope.BOUNDS.r.max) {
+        $scope.position.to.r = $scope.BOUNDS.r.max;
       }
       break;
     case 'phi':
-      if ($scope.position.to.phi < BOUNDS.phi.min) {
-        $scope.position.to.phi = BOUNDS.phi.max - (BOUNDS.phi.min - $scope.position.to.phi);
-      } else if ($scope.position.to.phi > BOUNDS.phi.max) {
-        $scope.position.to.phi = BOUNDS.phi.min + ($scope.position.to.phi % BOUNDS.phi.max);
+      if ($scope.position.to.phi < $scope.BOUNDS.phi.min) {
+        $scope.position.to.phi = $scope.BOUNDS.phi.max - ($scope.BOUNDS.phi.min - $scope.position.to.phi);
+      } else if ($scope.position.to.phi > $scope.BOUNDS.phi.max) {
+        $scope.position.to.phi = $scope.BOUNDS.phi.min + ($scope.position.to.phi % $scope.BOUNDS.phi.max);
       }
       break;
     }

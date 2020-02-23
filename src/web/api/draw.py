@@ -23,7 +23,10 @@ BOUNDS = {
     'min': 0,
     'max': 45
   }
-  # no min and max for phi
+  'phi': { # phi bounds are just for the frontend
+    'min': 0,
+    'max': 360
+  }
 }
 
 current_pos = {
