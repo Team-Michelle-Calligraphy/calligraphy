@@ -31,7 +31,8 @@ def api_load_route():
     'position': draw.current_pos,
     'strokes': strokes,
     'ports': arduino.portOptions,
-    'selectedPort': arduino.selectedPort
+    'selectedPort': arduino.selectedPort,
+    'bounds': draw.BOUNDS
   }
 
   return jsonify(data), 200

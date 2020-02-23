@@ -26,11 +26,13 @@ for p in PORTS:
 
 def setSerial(name):
   global SERIAL
+  global selectedPort
   try:
-    SERIAL = serial.Serial(name, 9600) # '/dev/cu.usbmodem14601'
-    print('WORKED')
+    SERIAL = serial.Serial(name, 9600)
+    selectedPort = name
+    print('Selected new port: ' + str(name))
   except:
-    print('FAILED')
+    print('Port not selected: ' + str(name))
     pass
 
 # sends a string to the port

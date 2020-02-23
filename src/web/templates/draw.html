@@ -48,28 +48,33 @@
           <div class="coords-title">Move To</div>
           <div class="coord">
             <div class="title">x</div>
-            <input class="value" type="number" ng-model="position.to.x" ng-change="canvasDraw()"/>
+            <input class="value" type="number" ng-model="position.to.x" ng-change="updateCoord('x')" />
+            <!-- min="0" max="475" -->
           </div>
           <div class="coord">
             <div class="title">y</div>
-            <input class="value" type="number" ng-model="position.to.y" ng-change="canvasDraw()"/>
+            <input class="value" type="number" ng-model="position.to.y" ng-change="updateCoord('y')" />
+            <!-- min="0" max="650" -->
           </div>
           <div class="coord">
             <div class="title">z</div>
-            <input class="value" type="number" ng-model="position.to.z" ng-change="canvasDraw()" />
+            <input class="value" type="number" ng-model="position.to.z" ng-change="updateCoord('z')" />
+            <!-- min="0" max="100" -->
           </div>
           <div class="coord">
             <div class="title">r</div>
-            <input class="value" type="number" ng-model="position.to.r" ng-change="canvasDraw()" />
+            <input class="value" type="number" ng-model="position.to.r" ng-change="updateCoord('r')" />
+            <!-- min="0" max="45" -->
           </div>
           <div class="coord">
             <div class="title">phi</div>
-            <input class="value" type="number" ng-model="position.to.phi" ng-change="canvasDraw()" />
+            <input class="value" type="number" ng-model="position.to.phi" ng-change="updateCoord('phi')" />
+            <!-- min="0" max="360" -->
           </div>
       </div>
       <div class="controller-row main-actions">
         <div class="stroke-action submittable" ng-click="moveToCoords()">Move</div>
-        <div class="stroke-action submittable" ng-click="moveToCoords()">Dip</div>
+        <div class="stroke-action submittable" ng-click="dip()">Dip</div>
         <div class="stroke-action modifyable" ng-click="addNew()">Add New</div>
       </div>
       <div class="section-title">My Library</div>
