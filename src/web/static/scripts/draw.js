@@ -5,6 +5,7 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
 
   $scope.strokes = [];
   $scope.ports = [];
+  $scope.selectedPort = '';
   $scope.position = {
     x: 180,
     y: 120,
@@ -42,6 +43,25 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
         console.log(data);
         $scope.strokes = data.strokes;
         $scope.ports = data.ports;
+        $scope.selectedPort = data.portOptions;
+      }, function (error) { 
+        console.log(error);
+    });
+  }
+
+  $scope.config = function () {
+    let req = {
+      method: 'POST',
+      url: '/api/config',
+      headers: { 'Content-Type': 'application/json' },
+      data: JSON.stringify({ 
+        serial: $scope.selectedPort
+      })
+    };
+
+    $http(req)
+      .then(function ({ data }) {
+        console.log(data);
       }, function (error) { 
         console.log(error);
     });
@@ -122,9 +142,16 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
         $scope.position.to = Object.assign({}, data);
         $scope.canvasDraw();
 
-      }, function (error) {
-        console.log(error);
+      }, function ({ data }) {
+        $scope.position = data.pos;
+        $scope.position.to = Object.assign({}, data.pos);
+        $scope.canvasDraw();
+        console.log(data.error);
     });
+  }
+
+  $scope.edit = function (stroke) {
+    window.location = `/edit/${stroke.name}`;
   }
 
 }]);

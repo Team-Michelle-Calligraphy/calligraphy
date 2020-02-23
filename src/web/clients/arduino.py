@@ -9,31 +9,40 @@ import serial.tools.list_ports
 
 # use this to set a serial port for Arduino, can be called manually
 # port number can be found in the bottom right corner of the Arduino software
-# def setSerial(port):
-#   try:
-#     SERIAL = serial.Serial(port, 9600)
-#     return True
-#   except:
-#     SERIAL = False
-#     return False
 
 SERIAL = False
 PORTS = list(serial.tools.list_ports.comports())
-
-port_options = []
+portOptions = []
+selectedPort = ''
 
 for p in PORTS:
-  if 'Arduino' in p[0] and setSerial(p[0]):
-    # if this says arduino and setting it works then stop here
-    break
+  portOptions.append(p[0])
+  if selectedPort == '' and 'Arduino' in p[0]:
+    try:
+      SERIAL = serial.Serial(p[0], 9600)
+      selectedPort = p[0]
+    except:
+      pass
 
-
-SERIAL = serial.Serial('/dev/cu.usbmodem14601', 9600)
+def setSerial(name):
+  global SERIAL
+  try:
+    SERIAL = serial.Serial(name, 9600) # '/dev/cu.usbmodem14601'
+    print('WORKED')
+  except:
+    print('FAILED')
+    pass
 
 # sends a string to the port
 def send(message):
-  print(message)
-  SERIAL.write(str(message))
+  global SERIAL
+  if SERIAL is not False:
+    resp = SERIAL.write(str(message))
+    print(message)
+    print(resp)
+    return True
+  else:
+    return False
 
 # reads the serial to get info from the machine
 # def read():

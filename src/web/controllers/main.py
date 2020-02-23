@@ -7,16 +7,12 @@ import json
 main = Blueprint(
   'main', __name__, template_folder='templates', static_folder='static')
 
-
 # ------------------------------------------------------------------------------
 # REQUIRES:
 # MODIFIES:
-# EFFECTS: returns the index page populated with tweets and user data
+# EFFECTS: returns the index page
 # ------------------------------------------------------------------------------
-@main.route("/", methods=["GET"])
+@main.route("/")
 def main_route():
-
   options = {}
-  options["strokes"] = []
-
   return render_template("draw.html", **options)

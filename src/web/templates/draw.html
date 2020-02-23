@@ -8,8 +8,8 @@
     <div class="title">
       Shotobot
     </div>
-    <select>
-      <option ng-repeat="option in ports">[[option]]</option>
+    <select ng-model="selectedPort" ng-change="config()">
+      <option ng-repeat="option in ports" ng-selected="option.selected" ng-value="option">[[option]]</option>
     </select>
   </div>
 
@@ -121,7 +121,7 @@
         <div class="stroke" ng-repeat="stroke in strokes track by $index">
           <div class="stroke-title">[[ stroke.name ]]</div>
           <div class="stroke-actions">
-            <!-- TODO: <div class="stroke-action modifyable">Edit</div> -->
+            <div class="stroke-action modifyable" ng-click="edit(stroke)">Edit</div>
             <div class="stroke-action submittable" ng-click="drawStroke(stroke)">Draw</div>
             <div class="stroke-action previewable" ng-click="preview(stroke)">Preview</div>
           </div>

@@ -35,14 +35,14 @@ current_pos = {
 }
 
 def validate_position(pos):
-  if pos['x'] > BOUNDS['x'] or pos['x'] < BOUNDS['x']['min']:
-    return 'X out of bounds' + str(pos['x']), {}
-  if pos['y'] > BOUNDS['y'] or pos['y'] < BOUNDS['y']['min']:
-    return 'Y out of bounds' + str(pos['y']), {}
-  if pos['z'] > BOUNDS['z'] or pos['z'] < BOUNDS['z']['min']:
-    return 'Z out of bounds' + str(pos['z']), {}
+  if pos['x'] > BOUNDS['x']['max'] or pos['x'] < BOUNDS['x']['min']:
+    return 'X out of bounds ' + str(pos['x']), {}
+  if pos['y'] > BOUNDS['y']['max'] or pos['y'] < BOUNDS['y']['min']:
+    return 'Y out of bounds ' + str(pos['y']), {}
+  if pos['z'] > BOUNDS['z']['max'] or pos['z'] < BOUNDS['z']['min']:
+    return 'Z out of bounds ' + str(pos['z']), {}
   if pos['r'] > BOUNDS['r']['max'] or pos['r'] < BOUNDS['r']['min']:
-    return 'R out of bounds' + str(pos['r']), {}
+    return 'R out of bounds ' + str(pos['r']), {}
   
   # go in a circle for phi, if it's over 360 or under -360 just go to the new one
   pos['phi'] = pos['phi'] % 360
@@ -54,8 +54,8 @@ def validate_to(command):
     'x': current_pos['x'] + command['x'],
     'y': current_pos['y'] + command['y'],
     'z': current_pos['z'] + command['z'],
-    'r': current_pos['r'] + command['r'],
-    'phi': current_pos['phi'] + command['phi']
+    'r': command['r'],
+    'phi': command['phi']
   }
   return validate_position(new_pos)
 
@@ -94,13 +94,15 @@ def api_draw_route():
     # elif: down and up preset, 
     
     if error != '':
-      return jsonify({ 'error': error }), 302
+      return jsonify({ 'error': error, 'pos': current_pos }), 302
 
     # convert the position to a command
     command_str = translate(new_pos)
 
     # send the command to the arduino
-    arduino.send(command_str)
+    if not arduino.send(command_str):
+      return jsonify({ 'error': 'Unable to connect to port', 'pos': current_pos }), 302
+
     
     # set the current position to this new position
     current_pos = new_pos

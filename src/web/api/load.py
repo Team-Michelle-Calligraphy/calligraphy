@@ -28,8 +28,29 @@ def api_load_route():
 
   data = {
     'strokes': strokes,
-    'ports': arduino.PORTS
+    'ports': arduino.portOptions,
+    'selectedPort': arduino.selectedPort
   }
 
   return jsonify(data), 200
 
+@api_load.route('api/load/<file_name>', methods=['GET'])
+def api_load_file_route():
+  stroke = {}
+  file_location = os.path.join(STROKES_PATH, file_name)
+  if os.path.isfile(file_location):
+    file = open(file_location, "r")
+    body = file.read()
+    stroke = {
+      'name': file_name,
+      'body': body
+    }
+    file.close()
+
+  data = {
+    'stroke': stroke,
+    'ports': arduino.portOptions,
+    'selectedPort': arduino.selectedPort
+  }
+
+  return jsonify(data), 200
