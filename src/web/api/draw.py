@@ -22,7 +22,7 @@ BOUNDS = {
   'r': {
     'min': 0,
     'max': 45
-  }
+  },
   'phi': { # phi bounds are just for the frontend
     'min': 0,
     'max': 360
