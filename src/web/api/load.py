@@ -1,6 +1,7 @@
 from flask import *
 import os
 from clients import arduino
+import draw
 
 api_load = Blueprint('api_load', __name__, template_folder='templates')
 
@@ -27,6 +28,7 @@ def api_load_route():
       file.close()
 
   data = {
+    'position': draw.current_pos,
     'strokes': strokes,
     'ports': arduino.portOptions,
     'selectedPort': arduino.selectedPort

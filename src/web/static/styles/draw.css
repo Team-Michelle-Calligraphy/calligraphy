@@ -1,4 +1,8 @@
 
+.section-title {
+  border-bottom: 1px solid #ddd;
+}
+
 /* canvas */
 
 .container-col.controller {
@@ -62,7 +66,6 @@
 .main-actions {
   height: 54px;
   padding-right: 10px;
-  border-bottom: 1px solid #ddd;
 }
 
 .stroke-action {

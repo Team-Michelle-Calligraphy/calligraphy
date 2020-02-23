@@ -9,15 +9,15 @@ api_draw = Blueprint('api_draw', __name__, template_folder='templates')
 BOUNDS = {
   'x': {
     'min': 0,
-    'max': 600
+    'max': 475
   },
   'y': {
     'min': 0,
-    'max': 600
+    'max': 650
   },
   'z': {
     'min': 0,
-    'max': 600
+    'max': 100
   },
   'r': {
     'min': 0,
@@ -27,9 +27,9 @@ BOUNDS = {
 }
 
 current_pos = {
-  'x': 0,
-  'y': 0,
-  'z': 0,
+  'x': 100,
+  'y': 100,
+  'z': 100,
   'r': 0,
   'phi': 0
 }
@@ -100,8 +100,8 @@ def api_draw_route():
     command_str = translate(new_pos)
 
     # send the command to the arduino
-    if not arduino.send(command_str):
-      return jsonify({ 'error': 'Unable to connect to port', 'pos': current_pos }), 302
+    # if not arduino.send(command_str):
+    #   return jsonify({ 'error': 'Unable to connect to port', 'pos': current_pos }), 302
 
     
     # set the current position to this new position

@@ -17,10 +17,11 @@ def api_save_route():
 
   file_name = data['name']
   file_contents = data['body']
-
   file_location = os.path.join(STROKES_PATH, file_name)
 
   if file_contents == "":
+    if not os.path.isfile(file_location):
+      return jsonify({}), 302
     os.remove(file_location)
   else:
     file = open(file_location, "w")

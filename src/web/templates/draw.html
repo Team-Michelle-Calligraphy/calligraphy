@@ -6,7 +6,7 @@
 <div class="page" ng-controller="draw" ng-init="init()">
   <div class="header">
     <div class="title">
-      Shotobot
+      ShodoBot
     </div>
     <select ng-model="selectedPort" ng-change="config()">
       <option ng-repeat="option in ports" ng-selected="option.selected" ng-value="option">[[option]]</option>
@@ -18,55 +18,9 @@
       <div class="controller-row view-holder">
         <canvas id="canvas"></canvas>
       </div>
-      <!-- <div class="controller-row button-pad-holder">
-        <div class="direction-pad-holder">
-          <div class="direction-pad">
-            <div class="center-label">x,y</div>
-            <div class="circle-button north previewable" ng-click="arrows('north')">
-              <div class="arrow"></div>
-            </div>
-            <div class="circle-button west previewable" ng-click="arrows('west')">
-              <div class="arrow"></div>
-            </div>
-            <div class="circle-button east previewable" ng-click="arrows('east')">
-              <div class="arrow"></div>
-            </div>
-            <div class="circle-button south previewable" ng-click="arrows('south')">
-              <div class="arrow"></div>
-            </div>
-          </div>
-        </div>
-        <div class="vertical-pad-holder">
-          <div class="vertical-pad">
-            <div class="center-label">z</div>
-            <div class="circle-button north previewable" ng-click="arrows('up')">
-              <div class="arrow"></div>
-            </div>
-            <div class="circle-button south previewable" ng-click="arrows('down')">
-              <div class="arrow"></div>
-            </div>
-          </div>
-        </div>
-        <div class="direction-pad-holder">
-          <div class="direction-pad">
-            <div class="center-label">r,phi</div>
-            <div class="circle-button north previewable" ng-click="arrows('a-north')">
-              <div class="arrow"></div>
-            </div>
-            <div class="circle-button west previewable" ng-click="arrows('a-west')">
-              <div class="arrow"></div>
-            </div>
-            <div class="circle-button east previewable" ng-click="arrows('a-east')">
-              <div class="arrow"></div>
-            </div>
-            <div class="circle-button south previewable" ng-click="arrows('a-south')">
-              <div class="arrow"></div>
-            </div>
-          </div>
-        </div>
-      </div> -->
     </div>
     <div class="container-col library">
+      <div class="section-title">Paint Actions</div>
       <div class="controller-row coords disabled">
         <div class="coords-title">Position</div>
         <div class="coord">
@@ -118,6 +72,7 @@
         <div class="stroke-action submittable" ng-click="moveToCoords()">Dip</div>
         <div class="stroke-action modifyable" ng-click="addNew()">Add New</div>
       </div>
+      <div class="section-title">My Library</div>
       <div class="strokes">
         <div class="stroke" ng-repeat="stroke in strokes track by $index">
           <div class="stroke-top">

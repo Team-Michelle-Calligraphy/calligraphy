@@ -7,16 +7,14 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
   $scope.ports = [];
   $scope.selectedPort = '';
   $scope.position = {
-    x: 180,
-    y: 120,
-    z: 120,
-    r: 20,
-    phi: 20,
-    to: {
-      x: 0, y: 0, z: 0, r: 0, phi: 0
-    },
+    x: 0,
+    y: 0,
+    z: 0,
+    r: 0,
+    phi: 0,
     stroke: {}
   }
+  $scope.position.to = Object.assign({}, $scope.position);
 
   $scope.init = function () {
     const canvas = document.getElementById("canvas");
@@ -41,9 +39,12 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
     $http(req)
       .then(function ({ data }) {
         console.log(data);
+        $scope.position = data.position;
+        $scope.position.to = Object.assign({}, data.position);
         $scope.strokes = data.strokes;
         $scope.ports = data.ports;
         $scope.selectedPort = data.portOptions;
+        $scope.canvasDraw();
       }, function (error) { 
         console.log(error);
     });
@@ -122,7 +123,6 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
   }
 
   $scope.moveToCoords = function () {
-    const to = $scope.position.to;
     const command = Object.assign({}, $scope.position.to);
     command.type = 'abs';
     $scope.drawCall([command]);
@@ -153,7 +153,7 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
   // EDIT
 
   $scope.addNew = function () {
-    $scope.strokes.push({
+    $scope.strokes.unshift({
       name: 'New Stroke',
       body: 'down\n\nup',
       isEditing: true
@@ -161,6 +161,7 @@ angular.module('calligraphy').controller('draw', ['$scope', '$http', function ($
   }
 
   $scope.edit = function (stroke) {
+    $scope.strokes.forEach(s => s.isEditing = false);
     stroke.isEditing = true;
     $scope.preview(stroke);
   }

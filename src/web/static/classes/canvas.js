@@ -14,12 +14,12 @@ const TICK = {
 }
 
 const POINTER = {
-  STROKE_COLOR: '#00F4',
+  STROKE_COLOR: '#00F8',
   WIDTH: 2,
   LENGTH: 12
 };
 
-const BRUSH = {
+const POINTER_TO = {
   STROKE_COLOR: '#F008',
   WIDTH: 2
 };
@@ -142,12 +142,18 @@ class Pointer {
     this.ctx.beginPath();
     this.ctx.arc(x, y, r, 0, Math.TWO_PI);
     this.ctx.strokeStyle = POINTER.STROKE_COLOR;
+    if(this.type === 'to') {
+      this.ctx.strokeStyle = POINTER_TO.STROKE_COLOR;
+    }
     this.ctx.stroke();
   }
 
   drawLines({ x, y, r }) {
     this.ctx.strokeStyle = POINTER.STROKE_COLOR;
     this.ctx.lineWidth = POINTER.WIDTH;
+    if(this.type === 'to') {
+      this.ctx.strokeStyle = POINTER_TO.STROKE_COLOR;
+    }
     this.ctx.beginPath();
     this.ctx.moveTo(x, y + r);
     this.ctx.lineTo(x, y + r + POINTER.LENGTH);
@@ -167,11 +173,11 @@ class Pointer {
   }
 
   drawBrush({ x, y, r, phi }) {
-    this.ctx.strokeStyle = BRUSH.STROKE_COLOR;
-    this.ctx.lineWidth = BRUSH.WIDTH;
+    this.ctx.strokeStyle = POINTER.STROKE_COLOR;
+    this.ctx.lineWidth = POINTER.WIDTH;
 
     if(this.type === 'to') {
-      this.ctx.strokeStyle = '#FF0';
+      this.ctx.strokeStyle = POINTER_TO.STROKE_COLOR;
     }
     this.ctx.beginPath();
     this.ctx.moveTo(x, y);
