@@ -1,10 +1,8 @@
-# calligraphy
-Calligraphy Arduino Interface and Web App
---- 
-Flask==1.1.1
-pyserial==2.7
-requests==2.10.0
+# Calligraphy Arduino Interface and Web App
 
+Webpage that interfaces with 3D printer-style arduino capabale of drawing calligraphy. Use saved strokes, define your own, or free draw.
+
+## Setup
 
 ```
 install pip
